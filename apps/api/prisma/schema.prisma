@@ -1,0 +1,78 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:../../data/security-studio.db"
+}
+
+model Favorite {
+  id        Int      @id @default(autoincrement())
+  toolId    String
+  createdAt DateTime @default(now())
+
+  @@unique([toolId])
+}
+
+model History {
+  id            Int      @id @default(autoincrement())
+  toolId        String
+  toolName      String
+  action        String
+  inputSummary  String   @default("")
+  outputSummary String   @default("")
+  createdAt     DateTime @default(now())
+}
+
+model Workspace {
+  id          Int             @id @default(autoincrement())
+  name        String
+  description String          @default("")
+  icon        String          @default("folder")
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+  tools       WorkspaceTool[]
+}
+
+model WorkspaceTool {
+  id          Int       @id @default(autoincrement())
+  workspaceId Int
+  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  toolId      String
+  order       Int       @default(0)
+  addedAt     DateTime  @default(now())
+
+  @@unique([workspaceId, toolId])
+}
+
+model Snippet {
+  id          Int      @id @default(autoincrement())
+  title       String
+  content     String
+  language    String   @default("text")
+  toolId      String?
+  workspaceId Int?
+  createdAt   DateTime @default(now())
+}
+
+model Setting {
+  id        Int      @id @default(autoincrement())
+  key       String   @unique
+  value     String
+  updatedAt DateTime @updatedAt
+}
+
+model RecentSearch {
+  id          Int      @id @default(autoincrement())
+  query       String
+  resultCount Int      @default(0)
+  createdAt   DateTime @default(now())
+}
+
+model PinnedTool {
+  id        Int      @id @default(autoincrement())
+  toolId    String   @unique
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+}

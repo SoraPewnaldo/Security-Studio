@@ -1,0 +1,2 @@
+import type { ToolManifest } from '@security-studio/types';
+export const manifest: ToolManifest = { id: 'uuid-generator', name: 'UUID Generator', description: 'Generate v4 UUIDs in bulk', category: 'utilities', tags: ['uuid', 'guid', 'generate', 'random'], keywords: ['uuid', 'guid', 'unique', 'identifier', 'generate', 'v4', 'random'], version: '1.0.0', author: 'Security Studio', icon: 'Fingerprint', shortcuts: [{ label: 'Generate', keys: 'Ctrl+Enter', action: 'generate' }], examples: [{ label: 'Generate 5', input: { count: 5 }, description: 'Generate 5 UUIDs' }] };

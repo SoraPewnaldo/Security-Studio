@@ -1,0 +1,2 @@
+import type { ToolManifest } from '@security-studio/types';
+export const manifest: ToolManifest = { id: 'timestamp', name: 'Timestamp Converter', description: 'Convert between Unix timestamps and human-readable dates', category: 'utilities', tags: ['timestamp', 'unix', 'date', 'time', 'convert'], keywords: ['timestamp', 'unix', 'epoch', 'date', 'time', 'convert', 'utc', 'iso'], version: '1.0.0', author: 'Security Studio', icon: 'Clock', shortcuts: [], examples: [{ label: 'Current Time', input: { timestamp: 'now' }, description: 'Convert current time' }] };
