@@ -7,83 +7,141 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![Node.js Version](https://img.shields.io/badge/node-%3E%3D20.0.0-green.svg)](https://nodejs.org/)
-[![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey.svg)](#installation)
+[![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey.svg)](#prerequisites--quickstart)
 [![Milestone](https://img.shields.io/badge/Release-v1.1.0-orange.svg)](../../releases)
 
 ---
 
-**Security Studio** is a self-hosted, offline-ready web-based workspace designed to bundle all the utilities a security professional, penetration tester, or developer needs. No telemetry, no cloud dependencies, and absolute data privacy.
+**Security Studio** is a self-hosted, offline-ready web-based workspace designed to bundle all the tools a security professional, penetration tester, or developer needs. No telemetry, no cloud dependencies, and absolute data privacy.
 
 *Privacy-first • Manifest-driven • Auto-configuring • Local SQLite • Zero-Account Overhead*
+
+<br />
+
+<img src="./assets/ui_demo.png" alt="Security Studio Interface Preview" width="100%" style="border-radius: 12px; border: 1px solid #30363D; box-shadow: 0px 4px 20px rgba(0,0,0,0.4);" />
 
 </div>
 
 ---
 
-## 🚀 Key Features
+## 🛠️ The Security Toolset (40+ Tools)
 
-*   **⚡ 40+ Core Utilities**: Built-in encoders, decoders, cryptographic hashers, token inspectors, web-security analyzers, and subnetting tools.
-*   **🔌 Sandbox Plugin Platform**: Dynamically load third-party extensions in an isolated VM sandbox. Features permission safety tagging:
-    *   🟢 **Safe** (*Storage, History, Workspaces, Logging*)
-    *   🟡 **Sensitive** (*Filesystem access, local network queries*)
-    *   🔴 **Dangerous** (*Future: Shell executions, system process access*)
-*   **🔒 Local Network Proxy**: Proxies DNS, ASN, and WHOIS/RDAP requests directly from the local backend to bypass CORS constraints, featuring an **automatic Port 43 TCP WHOIS fallback** if registry APIs rate-limit or block connections.
-*   **📁 Custom Workspaces**: Group your most-used tools into customizable project workspaces for specific security engagements or tasks.
-*   **⌨️ Keyboard-First Workflow**: Launch any tool instantly using the built-in Command Palette (`Ctrl + K` or `/`) and control configurations with fast keyboard shortcuts.
-*   **📊 Persistent History**: Every audit and tool execution is securely stored in a local SQLite database for instant retrieval.
+Security Studio features over 40 specialized tools. Every tool operates strictly client-side, ensuring that your keys, payloads, and tokens never leave your browser. Each tool is equipped with a dedicated **Documentation** tab (rendered from local markdown) and **Examples** loaded instantly into active input panels.
+
+### 🔐 Authentication
+*   **JWT Inspector**: Parse, decode, and visually audit header and payload claims.
+*   **JWT Generator**: Craft custom tokens with arbitrary claims.
+*   **JWT Signature Verifier**: Inspect signature structures and verify signature keys.
+*   **OAuth PKCE Generator**: Generate cryptographic code verifiers and SHA-256 code challenges.
+*   **OAuth State Generator**: Produce cryptographically secure states for redirection flows.
+*   **SAML Decoder**: Decode SAML assertions and responses.
+*   **Session Cookie Analyzer**: Inspect cookie structures and report security attributes (Secure, HttpOnly, SameSite).
+
+### 🔒 Cryptography
+*   **Hash Generator**: Instant MD5, SHA-1, SHA-256, and SHA-512 checks.
+*   **bcrypt Hash/Verify**: Benchmark, salt, and verify passwords using bcrypt.
+*   **Password Generator**: Generate highly customizable secure passwords.
+*   **Password Strength**: Analyze password entropy, length, and estimate crack times.
+*   **HMAC Generator**: Verify message integrity using shared secret keys.
+*   **RSA Key Generator**: Generate 2048-bit or 4096-bit public/private key pairs.
+*   **AES Encrypt/Decrypt**: Encrypt and decrypt payloads symmetrically.
+*   **Certificate Viewer**: Parse and inspect X.509 SSL/TLS certificates.
+*   **PEM/DER Converter**: Interconvert between binary DER and ASCII PEM formats.
+
+### 🌐 Web Security
+*   **CSP Builder**: Graphically build Content Security Policies.
+*   **Security Header Analyzer**: Audit HTTP headers (HSTS, CSP, X-Frame-Options) for security.
+*   **CSP Evaluator**: Evaluate CSP definitions for bypasses and weaknesses.
+*   **Cookie Analyzer**: Decrypt and inspect session cookie formats.
+*   **CORS Analyzer**: Test CORS configurations for wildcard exposures.
+*   **CSP Generator**: Bootstrap solid CSP rules based on framework templates.
+*   **HTTP Header Diff**: Compare differences between header configurations.
+
+### 🌍 Networking & Registry
+*   **CIDR Calculator**: Map subnets, calculate IP ranges, and get network sizes.
+*   **IP Utilities**: Inspect local network addresses, headers, and geolocation contexts.
+*   **DNS Lookup**: Resolve DNS zones (A, AAAA, CNAME, MX, TXT) proxied locally.
+*   **WHOIS / RDAP Lookup**: AUTHORITATIVE WHOIS registrar records query. Features a **TCP Port 43 socket fallback** if public RDAP APIs return `403 Permission Denied` blocks.
+*   **ASN Lookup**: Lookup Autonomous System Numbers (ASN).
+*   **User-Agent Parser**: Parse and catalog User-Agent strings.
+
+### 📝 Encoding & Formatting
+*   **Base64 Converter**: Base64 encode/decode textual and binary values.
+*   **URL Encode/Decode**: Encode string parameters safely for URL injection.
+*   **HTML Entity Converter**: Interconvert between HTML entities and character outputs.
+*   **Hex Encode/Decode**: Hexadecimal conversions.
+*   **Unicode Converter**: Convert code points to readable characters.
+*   **Binary Converter**: Text-to-binary conversions.
+*   **ROT13 Converter**: Basic Caesar cipher utility supporting arbitrary shifts.
+
+### 🧰 Utilities
+*   **JSON Formatter**: Format, minify, and validate JSON strings.
+*   **Regex Playground**: Test regular expressions against text inputs.
+*   **UUID Generator**: Generate cryptographically random UUIDs (v4).
+*   **Timestamp Converter**: Convert Epoch timestamps to readable UTC/Local datetimes.
+*   **JSON Diff**: Match structural and value differences between JSON objects.
+*   **YAML ↔ JSON Converter**: Convert structures between YAML and JSON layouts.
 
 ---
 
-## 🛠️ Included Tools (v1.1.0)
+## 📁 Workspaces & Audit History
 
-| Category | Tools | Description |
-| :--- | :--- | :--- |
-| 🔐 **Authentication** | JWT Inspector, JWT Generator, JWT Signature Verifier, OAuth PKCE, OAuth State Generator, SAML Decoder, Session Cookie Analyzer | Token decoders, crypto signature verifiers, PKCE state generators, and cookie security flags |
-| 🔒 **Cryptography** | Hash Generator (MD5, SHA1/256/512), bcrypt, Password Generator, Password Strength, HMAC Generator, RSA Keypair Generator, AES Encrypt/Decrypt, Certificate Viewer, PEM/DER Converter | Standard cryptographic hashing, password entropy checks, key generation, and sym/asym crypto |
-| 🌐 **Web Security** | CSP Builder, Security Header Analyzer, CSP Evaluator, Cookie Analyzer, CORS Analyzer, CSP Generator, HTTP Header Diff | Audit web app configurations, analyze CORS profiles, and construct Content Security Policies |
-| 🌍 **Networking** | CIDR Calculator, IP Utilities, DNS Lookup, WHOIS / RDAP Lookup, ASN Lookup, User-Agent Parser | Subnetting planners, DNS zone resolvers, and authoritative registry queries with TCP socket failovers |
-| 📝 **Encoding** | Base64, URL Encode/Decode, HTML Entity, Hex Encode/Decode, Unicode Converter, Binary Converter, ROT13 | Seamless data encoding and decoding between formats |
-| 🧰 **Utilities** | JSON Formatter, Regex Playground, UUID Generator, Timestamp Converter, JSON Diff, YAML ↔ JSON Converter | Format and audit structured outputs, parse dates, and test expressions |
+Security Studio organizes your security audits through a workspace management system.
+*   **Project isolation**: Group relevant tools together under a dedicated "Workspace" folder (e.g., *External Audit*, *Internal Pentest*) for focused access.
+*   **Persistent Audit History**: Your tool inputs, configurations, and outputs are logged locally into an SQLite database. You can review past calculations at any time, reload past inputs, or clear the history index.
+*   **Settings & Exporting**: Export all workspace files, settings, and database tables in a single JSON schema for backup, or secure-wipe the database with the database reset command.
 
 ---
 
-## 📦 Installation & Setup
+## 🔌 VM Sandbox Plugin Engine
 
-To run the application locally, you only need **Node.js (v20+)**:
+Expand Security Studio by writing custom plugins. Drop any plugin directory into the `/plugins` folder, and the application loads it dynamically.
+*   **Logical Isolation**: Plugins run inside a secure backend Node.js `vm` sandbox context, protecting the host server from malicious scripts.
+*   **Granular Permissions Badging**: Every plugin is assigned visibility badges depending on the resources declared in its manifest:
+    *   🟢 **Safe**: Basic sandbox operations, local storage, history logging, and internal event-bus access.
+    *   🟡 **Sensitive**: Direct local filesystem access or network calls.
+    *   🔴 **Dangerous**: *Future expansion* — Shell command executions or system process spawns.
+*   **Manifest & Live Logs**: Click **Manifest** to inspect the plugin configuration or **Logs** to view console outputs emitted by the plugin inside the sandbox in real-time.
+
+---
+
+## ⚙️ Prerequisites & Quickstart
+
+### Prerequisites
+1.  **Node.js**: Version `20.0.0` or higher installed on your host machine.
+2.  **Git**: Installed (to clone the codebase).
+3.  *(Optional)* **Windows OS** to use the one-click startup batch script.
+
+---
+
+### 🚀 Windows Startup (One-Click)
+We bundle a `start.bat` script in the root directory to automate startup on Windows:
+1.  Double-click the **`start.bat`** file.
+2.  The script will:
+    *   Check for Node.js and npm path variables.
+    *   Inspect your environment and run `npm install` automatically if `node_modules` are missing.
+    *   Connect to the local SQLite database.
+    *   Launch the API and Vite dev servers concurrently.
+3.  Open **`http://localhost:3000`** in your browser!
+
+---
+
+### 💻 Manual CLI Startup (Any OS)
+For macOS, Linux, or custom CLI launches:
 
 ```bash
-# Clone the repository
+# 1. Clone the repository
 git clone https://github.com/SoraPewnaldo/Security-Studio.git
 cd Security-Studio
 
-# Install dependencies and bootstrap the SQLite database
+# 2. Install dependencies (triggers Prisma DB generation)
 npm install
 
-# Run the API and Web workspaces concurrently
+# 3. Spin up the workspaces
 npm run dev
 ```
 
-*Note: No manual database migrations, Docker config, or local database setups are required. A SQLite DB is instantly generated inside `data/` and loaded automatically.*
-
----
-
-## 📐 Architecture & Monorepo Layout
-
-Security Studio is built as a highly structured workspaces monorepo:
-
-```text
-security-studio/
-├── apps/
-│   ├── web/           # React + Vite frontend SPA (uses code-split lazy loading)
-│   └── api/           # Express + Prisma + SQLite local API backend
-├── packages/
-│   ├── core/          # Event bus and local tool search indexing
-│   ├── tool-sdk/      # Tool registry & SDK
-│   ├── types/         # Shared TypeScript interfaces
-│   └── utils/         # Shared helper functions
-├── data/              # SQLite database (auto-generated)
-└── config/            # Workspace settings config files
-```
+The SQLite database is auto-created in the `/data` folder, and the dev server spins up. Open `http://localhost:3000` in your web browser.
 
 ---
 
@@ -100,7 +158,7 @@ Security Studio operates on a **manifest-driven architecture**. To add a new too
     ├── schema.ts      # Input schema validations
     └── README.md      # Tool documentation
     ```
-2. Save your changes. The Vite glob resolver in `src/features/register-tools.ts` will automatically register the manifest and component, instantly rendering it in the Search Index, Sidebar, and Command Palette.
+2. Save your changes. The glob resolver in `src/features/register-tools.ts` will automatically register the manifest and component, rendering it in the Search Index, Sidebar, and Command Palette.
 
 ---
 
