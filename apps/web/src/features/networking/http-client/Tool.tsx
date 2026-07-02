@@ -6,7 +6,7 @@ import { Send, Plus, Trash2, Copy, ExternalLink, Clock, CheckCircle, XCircle, Al
 import { useNavigate } from '@tanstack/react-router';
 import { manifest } from './manifest';
 
-const API_BASE = 'http://127.0.0.1:4000';
+const API_BASE = '';
 
 type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH' | 'HEAD' | 'OPTIONS';
 type ActiveTab = 'request' | 'response' | 'headers' | 'cookies';
