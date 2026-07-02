@@ -24,62 +24,58 @@
 
 ---
 
-## 🛠️ The Security Toolset (40+ Tools)
+## 🛠️ The Security Toolset (38 Tools)
 
-Security Studio features over 40 specialized tools. Every tool operates strictly client-side, ensuring that your keys, payloads, and tokens never leave your browser. Each tool is equipped with a dedicated **Documentation** tab (rendered from local markdown) and **Examples** loaded instantly into active input panels.
+Security Studio features exactly 38 specialized tools. Every tool operates strictly client-side, ensuring that your keys, payloads, and tokens never leave your browser. Each tool is equipped with a dedicated **Documentation** tab (rendered from local markdown) and **Examples** loaded instantly into active input panels.
 
 ### 🔐 Authentication
 *   **JWT Inspector**: Parse, decode, and visually audit header and payload claims.
-*   **JWT Generator**: Craft custom tokens with arbitrary claims.
-*   **JWT Signature Verifier**: Inspect signature structures and verify signature keys.
+*   **JWT Verifier**: Decode tokens, verify signatures, and audit payload claims.
 *   **OAuth PKCE Generator**: Generate cryptographic code verifiers and SHA-256 code challenges.
 *   **OAuth State Generator**: Produce cryptographically secure states for redirection flows.
 *   **SAML Decoder**: Decode SAML assertions and responses.
 *   **Session Cookie Analyzer**: Inspect cookie structures and report security attributes (Secure, HttpOnly, SameSite).
 
 ### 🔒 Cryptography
-*   **Hash Generator**: Instant MD5, SHA-1, SHA-256, and SHA-512 checks.
-*   **bcrypt Hash/Verify**: Benchmark, salt, and verify passwords using bcrypt.
-*   **Password Generator**: Generate highly customizable secure passwords.
-*   **Password Strength**: Analyze password entropy, length, and estimate crack times.
-*   **HMAC Generator**: Verify message integrity using shared secret keys.
-*   **RSA Key Generator**: Generate 2048-bit or 4096-bit public/private key pairs.
 *   **AES Encrypt/Decrypt**: Encrypt and decrypt payloads symmetrically.
 *   **Certificate Viewer**: Parse and inspect X.509 SSL/TLS certificates.
+*   **Hash Generator**: Instant MD5, SHA-1, SHA-256, and SHA-512 checks.
+*   **HMAC Generator**: Verify message integrity using shared secret keys.
+*   **Password Generator**: Generate highly customizable secure passwords.
+*   **Password Strength**: Analyze password entropy, length, and estimate crack times.
 *   **PEM/DER Converter**: Interconvert between binary DER and ASCII PEM formats.
+*   **RSA Key Generator**: Generate 2048-bit or 4096-bit public/private key pairs.
 
 ### 🌐 Web Security
-*   **CSP Builder**: Graphically build Content Security Policies.
-*   **Security Header Analyzer**: Audit HTTP headers (HSTS, CSP, X-Frame-Options) for security.
-*   **CSP Evaluator**: Evaluate CSP definitions for bypasses and weaknesses.
-*   **Cookie Analyzer**: Decrypt and inspect session cookie formats.
 *   **CORS Analyzer**: Test CORS configurations for wildcard exposures.
-*   **CSP Generator**: Bootstrap solid CSP rules based on framework templates.
-*   **HTTP Header Diff**: Compare differences between header configurations.
+*   **CSP Builder**: Graphically build Content Security Policies.
+*   **HTTP Header Diff**: Compare differences between HTTP header configurations.
+*   **Security Header Analyzer**: Audit HTTP response headers for missing security guards.
 
 ### 🌍 Networking & Registry
-*   **CIDR Calculator**: Map subnets, calculate IP ranges, and get network sizes.
-*   **IP Utilities**: Inspect local network addresses, headers, and geolocation contexts.
-*   **DNS Lookup**: Resolve DNS zones (A, AAAA, CNAME, MX, TXT) proxied locally.
-*   **WHOIS / RDAP Lookup**: AUTHORITATIVE WHOIS registrar records query. Features a **TCP Port 43 socket fallback** if public RDAP APIs return `403 Permission Denied` blocks.
 *   **ASN Lookup**: Lookup Autonomous System Numbers (ASN).
-*   **User-Agent Parser**: Parse and catalog User-Agent strings.
+*   **CIDR Calculator**: Map subnets, calculate IP ranges, and get network sizes.
+*   **DNS Lookup**: Resolve DNS zones (A, AAAA, CNAME, MX, TXT) proxied locally.
+*   **IP Utilities**: Inspect local network addresses, headers, and geolocation contexts.
+*   **WHOIS / RDAP Lookup**: Authoritative WHOIS registrar records query. Features an **automatic TCP Port 43 socket fallback** if public RDAP APIs return `403 Permission Denied` blocks.
 
 ### 📝 Encoding & Formatting
 *   **Base64 Converter**: Base64 encode/decode textual and binary values.
-*   **URL Encode/Decode**: Encode string parameters safely for URL injection.
+*   **Binary Converter**: Text-to-binary and binary-to-text conversions.
+*   **Hex Encode/Decode**: Hexadecimal encoding and decoding.
 *   **HTML Entity Converter**: Interconvert between HTML entities and character outputs.
-*   **Hex Encode/Decode**: Hexadecimal conversions.
-*   **Unicode Converter**: Convert code points to readable characters.
-*   **Binary Converter**: Text-to-binary conversions.
 *   **ROT13 Converter**: Basic Caesar cipher utility supporting arbitrary shifts.
+*   **Unicode Converter**: Convert code points to readable characters.
+*   **URL Encode/Decode**: Encode string parameters safely for URL injection.
 
 ### 🧰 Utilities
+*   **Cron Expression Parser**: Parse crontab expressions into readable schedules.
+*   **JSON Diff**: Match structural and value differences between JSON objects.
 *   **JSON Formatter**: Format, minify, and validate JSON strings.
 *   **Regex Playground**: Test regular expressions against text inputs.
-*   **UUID Generator**: Generate cryptographically random UUIDs (v4).
 *   **Timestamp Converter**: Convert Epoch timestamps to readable UTC/Local datetimes.
-*   **JSON Diff**: Match structural and value differences between JSON objects.
+*   **UUID Generator**: Generate cryptographically random UUIDs (v4).
+*   **XML Formatter**: Format, pretty-print, and minify XML inputs.
 *   **YAML ↔ JSON Converter**: Convert structures between YAML and JSON layouts.
 
 ---
