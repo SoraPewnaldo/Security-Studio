@@ -364,9 +364,9 @@ export function Sidebar() {
       <div className="flex-shrink-0 px-4 py-4 mt-auto">
         <button className="flex items-center gap-2 w-full px-2 py-1.5 text-[13px] text-text-secondary hover:text-text transition-colors cursor-pointer">
           <div className="w-5 h-5 rounded-full bg-border flex items-center justify-center">
-            <span className="text-[10px] font-medium text-text">AY</span>
+            <span className="text-[10px] font-medium text-text">U</span>
           </div>
-          <span>ayush</span>
+          <span>User</span>
         </button>
       </div>
     </aside>
