@@ -2,17 +2,7 @@
 // Tool System Types
 // ============================================================
 
-export type ToolCategory =
-  | 'encoding'
-  | 'cryptography'
-  | 'authentication'
-  | 'web-security'
-  | 'networking'
-  | 'utilities'
-  | 'forensics'
-  | 'osint'
-  | 'malware'
-  | 'blue-team';
+export type ToolCategory = string;
 
 export interface ToolExample {
   /** Human-readable label for the example */
@@ -68,18 +58,7 @@ export interface CategoryInfo {
   description: string;
 }
 
-export const CATEGORIES: CategoryInfo[] = [
-  { id: 'authentication', label: 'Authentication', icon: 'KeyRound', description: 'JWT, OAuth, tokens' },
-  { id: 'encoding', label: 'Encoding', icon: 'Binary', description: 'Base64, URL, HTML encoding' },
-  { id: 'cryptography', label: 'Cryptography', icon: 'Lock', description: 'Hashing, encryption, passwords' },
-  { id: 'networking', label: 'Networking', icon: 'Network', description: 'CIDR, IP, DNS utilities' },
-  { id: 'web-security', label: 'Web Security', icon: 'Shield', description: 'CSP, headers, policies' },
-  { id: 'forensics', label: 'Forensics', icon: 'Search', description: 'Digital forensics tools' },
-  { id: 'osint', label: 'OSINT', icon: 'Globe', description: 'Open source intelligence' },
-  { id: 'malware', label: 'Malware', icon: 'Bug', description: 'Malware analysis tools' },
-  { id: 'blue-team', label: 'Blue Team', icon: 'ShieldCheck', description: 'Defensive security tools' },
-  { id: 'utilities', label: 'Utilities', icon: 'Wrench', description: 'JSON, regex, UUIDs, timestamps' },
-];
+// (Categories are dynamically computed from manifests)
 
 // ============================================================
 // API Types
@@ -214,3 +193,21 @@ export interface ThemeConfig {
     danger: string;
   };
 }
+
+// ============================================================
+// Plugin System Types (re-export)
+// ============================================================
+
+export type {
+  PluginPermission,
+  PluginInput,
+  PluginOutput,
+  PluginManifest,
+  PluginLifecycle,
+  PluginAPI,
+  PluginStatus,
+  LoadedPlugin,
+  PluginExecutionResult,
+  PluginListItem,
+} from './plugin-types.js';
+

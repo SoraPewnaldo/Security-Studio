@@ -10,7 +10,7 @@
   ],
   "scripts": {
     "predev": "npm run db:generate && npm run db:push",
-    "dev": "npm run dev --workspace=apps/api & npm run dev --workspace=apps/web",
+    "dev": "concurrently \"npm run dev:api\" \"npm run dev:web\"",
     "dev:web": "npm run dev --workspace=apps/web",
     "dev:api": "npm run dev --workspace=apps/api",
     "build": "npm run build --workspaces",
@@ -25,5 +25,8 @@
   },
   "engines": {
     "node": ">=20.0.0"
+  },
+  "devDependencies": {
+    "concurrently": "^10.0.3"
   }
 }

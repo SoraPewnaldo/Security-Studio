@@ -4,9 +4,8 @@ import { Search } from 'lucide-react';
 import * as Icons from 'lucide-react';
 import { toolRegistry } from '@security-studio/tool-sdk';
 import { searchIndex } from '@security-studio/core';
-import { CATEGORIES } from '@security-studio/types';
 
-type LucideIcon = React.ComponentType<{ size?: number; className?: string }>;
+type LucideIcon = React.ComponentType<{ size?: number; className?: string; strokeWidth?: number }>;
 function getIcon(name: string): LucideIcon {
   return (Icons as unknown as Record<string, LucideIcon>)[name] || Icons.Wrench;
 }
@@ -24,7 +23,22 @@ export function AllTools() {
   }, [query, activeCategory]);
 
   const categoryCounts = useMemo(() => toolRegistry.getCategoryCounts(), []);
-  const activeCategories = CATEGORIES.filter((c) => (categoryCounts.get(c.id) ?? 0) > 0);
+  
+  const activeCategories = useMemo(() => {
+    const counts = categoryCounts;
+    const catMap = new Map<string, { id: string, label: string }>();
+    
+    for (const manifest of toolRegistry.getAllManifests()) {
+      if ((counts.get(manifest.category) ?? 0) > 0 && !catMap.has(manifest.category)) {
+        catMap.set(manifest.category, {
+          id: manifest.category,
+          label: manifest.category.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')
+        });
+      }
+    }
+    
+    return Array.from(catMap.values()).sort((a, b) => a.label.localeCompare(b.label));
+  }, [categoryCounts]);
 
   return (
     <div className="p-8 max-w-6xl mx-auto space-y-8">

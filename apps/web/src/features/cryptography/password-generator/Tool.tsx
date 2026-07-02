@@ -7,8 +7,15 @@ import { manifest } from './manifest';
 import { generateMultiple, calculateEntropy, type PasswordOptions } from './logic';
 import { copyToClipboard } from '@security-studio/utils';
 import toast from 'react-hot-toast';
+import readme from './README.md?raw';
 
 export default function PasswordGeneratorTool() {
+  const handleLoadExample = (example: any) => {
+    if (example.input?.options !== undefined) setOptions(example.input.options);
+    if (example.input?.count !== undefined) setCount(example.input.count);
+    if (example.input?.passwords !== undefined) setPasswords(example.input.passwords);
+  };
+
   const [options, setOptions] = useState<PasswordOptions>({
     length: 20,
     uppercase: true,
@@ -32,7 +39,7 @@ export default function PasswordGeneratorTool() {
   };
 
   return (
-    <ToolLayout manifest={manifest} outputText={passwords.join('\n')}>
+    <ToolLayout onLoadExample={handleLoadExample} readme={readme} manifest={manifest} outputText={passwords.join('\n')}>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         <InputPanel title="Configuration">
           <div className="space-y-4">

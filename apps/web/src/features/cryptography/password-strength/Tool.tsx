@@ -2,11 +2,16 @@ import { useState, useMemo } from 'react';
 import { ToolLayout } from '@/components/ToolLayout';
 import { manifest } from './manifest';
 import { analyzePassword } from './logic';
+import readme from './README.md?raw';
 
 const SCORE_COLORS = ['bg-danger', 'bg-warning', 'bg-warning', 'bg-success', 'bg-success'];
 const SCORE_TEXT = ['text-danger', 'text-warning', 'text-warning', 'text-success', 'text-success'];
 
 export default function PasswordStrengthTool() {
+  const handleLoadExample = (example: any) => {
+    if (example.input?.password !== undefined) setPassword(example.input.password);
+  };
+
   const [password, setPassword] = useState('');
 
   const result = useMemo(() => {
@@ -15,7 +20,7 @@ export default function PasswordStrengthTool() {
   }, [password]);
 
   return (
-    <ToolLayout manifest={manifest}>
+    <ToolLayout onLoadExample={handleLoadExample} readme={readme} manifest={manifest}>
       <div className="max-w-2xl space-y-6">
         <div className="space-y-2">
           <label className="text-xs text-text-secondary uppercase tracking-wider">Password</label>

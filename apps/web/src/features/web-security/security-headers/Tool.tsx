@@ -4,12 +4,18 @@ import { ToolLayout } from '@/components/ToolLayout';
 import { InputPanel } from '@/components/InputPanel';
 import { manifest } from './manifest';
 import { analyzeHeaders, type AnalysisResult } from './logic';
+import readme from './README.md?raw';
 
 const STATUS_ICON = { pass: CheckCircle2, warn: AlertTriangle, fail: XCircle };
 const STATUS_COLOR = { pass: 'text-success', warn: 'text-warning', fail: 'text-danger' };
 const GRADE_COLOR: Record<string, string> = { A: 'text-success', B: 'text-success', C: 'text-warning', D: 'text-warning', F: 'text-danger' };
 
 export default function SecurityHeadersTool() {
+  const handleLoadExample = (example: any) => {
+    if (example.input?.headers !== undefined) setHeaders(example.input.headers);
+    if (example.input?.result !== undefined) setResult(example.input.result);
+  };
+
   const [headers, setHeaders] = useState('');
   const [result, setResult] = useState<AnalysisResult | null>(null);
 
@@ -19,7 +25,7 @@ export default function SecurityHeadersTool() {
   };
 
   return (
-    <ToolLayout manifest={manifest}>
+    <ToolLayout onLoadExample={handleLoadExample} readme={readme} manifest={manifest}>
       <div className="space-y-4">
         <InputPanel title="Paste HTTP Response Headers">
           <textarea

@@ -148,9 +148,9 @@ function md5(input: string): string {
   input = input.substring(i - 64);
   const tail = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
   for (i = 0; i < input.length; i++) {
-    tail[i >> 2] |= input.charCodeAt(i) << (i % 4 << 3);
+    tail[i >> 2]! |= input.charCodeAt(i) << (i % 4 << 3);
   }
-  tail[i >> 2] |= 0x80 << (i % 4 << 3);
+  tail[i >> 2]! |= 0x80 << (i % 4 << 3);
 
   if (i > 55) {
     md5cycle(state, tail);

@@ -65,7 +65,7 @@ router.get('/', async (_req, res, next) => {
 // GET /api/workspaces/:id — get one workspace with tools
 router.get('/:id', async (req, res, next) => {
   try {
-    const id = parseInt(req.params['id'] ?? '', 10);
+    const id = parseInt((req.params['id'] as string) ?? '', 10);
 
     if (isNaN(id)) {
       res.status(400).json({ success: false, error: 'Invalid id' });
@@ -117,7 +117,7 @@ router.post('/', validate(createWorkspaceSchema), async (req, res, next) => {
 // PUT /api/workspaces/:id — update a workspace
 router.put('/:id', validate(updateWorkspaceSchema), async (req, res, next) => {
   try {
-    const id = parseInt(req.params['id'] ?? '', 10);
+    const id = parseInt((req.params['id'] as string) ?? '', 10);
 
     if (isNaN(id)) {
       res.status(400).json({ success: false, error: 'Invalid id' });
@@ -146,7 +146,7 @@ router.put('/:id', validate(updateWorkspaceSchema), async (req, res, next) => {
 // DELETE /api/workspaces/:id — delete a workspace (cascades tools)
 router.delete('/:id', async (req, res, next) => {
   try {
-    const id = parseInt(req.params['id'] ?? '', 10);
+    const id = parseInt((req.params['id'] as string) ?? '', 10);
 
     if (isNaN(id)) {
       res.status(400).json({ success: false, error: 'Invalid id' });
@@ -169,7 +169,7 @@ router.delete('/:id', async (req, res, next) => {
 // POST /api/workspaces/:id/tools — add a tool to a workspace
 router.post('/:id/tools', validate(addToolSchema), async (req, res, next) => {
   try {
-    const workspaceId = parseInt(req.params['id'] ?? '', 10);
+    const workspaceId = parseInt((req.params['id'] as string) ?? '', 10);
 
     if (isNaN(workspaceId)) {
       res.status(400).json({ success: false, error: 'Invalid workspace id' });
@@ -204,8 +204,8 @@ router.post('/:id/tools', validate(addToolSchema), async (req, res, next) => {
 // DELETE /api/workspaces/:id/tools/:toolId — remove a tool from a workspace
 router.delete('/:id/tools/:toolId', async (req, res, next) => {
   try {
-    const workspaceId = parseInt(req.params['id'] ?? '', 10);
-    const toolId = req.params['toolId'];
+    const workspaceId = parseInt((req.params['id'] as string) ?? '', 10);
+    const toolId = req.params['toolId'] as string;
 
     if (isNaN(workspaceId) || !toolId) {
       res.status(400).json({ success: false, error: 'Invalid parameters' });

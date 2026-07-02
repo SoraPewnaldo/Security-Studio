@@ -21,3 +21,14 @@ exports/
 snippets/
 backups/
 cache/
+
+# Markdown and AI files (excluding README)
+*.md
+!README.md
+.agents/
+Rules/
+
+# Build caching
+*.tsbuildinfo
+.eslintcache
+

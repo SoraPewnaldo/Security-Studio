@@ -7,6 +7,16 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Setup database URL strictly relative to the project root
+const PROJECT_ROOT = path.resolve(__dirname, '../../../');
+if (!process.env.DATABASE_URL) {
+  const dbPath = path.join(PROJECT_ROOT, 'data', 'security-studio.db');
+  process.env.DATABASE_URL = `file:${dbPath}`;
+}
+
 import { errorHandler } from './middleware/error-handler.js';
 import { prisma } from './lib/prisma.js';
 
@@ -19,9 +29,11 @@ import settingsRouter from './routes/settings.js';
 import pinnedRouter from './routes/pinned.js';
 import snippetsRouter from './routes/snippets.js';
 import searchRouter from './routes/search.js';
+import pluginsRouter from './routes/plugins.js';
+import networkingRouter from './routes/networking.js';
+import { loadPlugins } from './lib/plugin-loader.js';
 
 const app = express();
-const PORT = parseInt(process.env['PORT'] ?? '4000', 10);
 
 // ---------------------------------------------------------------------------
 // Global Middleware
@@ -37,7 +49,6 @@ app.use(
 );
 
 app.use(compression());
-
 app.use(express.json({ limit: '1mb' }));
 
 const limiter = rateLimit({
@@ -63,19 +74,28 @@ app.use('/api/settings', settingsRouter);
 app.use('/api/pinned', pinnedRouter);
 app.use('/api/snippets', snippetsRouter);
 app.use('/api/search', searchRouter);
-
-// ---------------------------------------------------------------------------
-// Global Error Handler
-// ---------------------------------------------------------------------------
+app.use('/api/plugins', pluginsRouter);
+app.use('/api/networking', networkingRouter);
 
 app.use(errorHandler);
 
 // ---------------------------------------------------------------------------
+// Static Frontend Serving (For Production)
+// ---------------------------------------------------------------------------
+
+const publicDir = path.join(__dirname, 'public');
+if (fs.existsSync(publicDir)) {
+  app.use(express.static(publicDir));
+  // SPA Fallback
+  app.get(/.*/, (req, res, next) => {
+    if (req.path.startsWith('/api')) return next();
+    res.sendFile(path.join(publicDir, 'index.html'));
+  });
+}
+
+// ---------------------------------------------------------------------------
 // Scaffolding & Setup
 // ---------------------------------------------------------------------------
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const PROJECT_ROOT = path.resolve(__dirname, '../../../');
 
 function ensureDirectories() {
   const dirs = ['data', 'config', 'plugins', 'exports', 'snippets', 'logs', 'backups', 'cache'];
@@ -107,17 +127,27 @@ function ensureDirectories() {
 // ---------------------------------------------------------------------------
 
 async function main(): Promise<void> {
-  // Ensure directories exist before connecting to the DB
   ensureDirectories();
 
-  // Ensure database connection is alive
   await prisma.$connect();
   console.log('[API] Database connected');
 
-  // Bind exclusively to 127.0.0.1 for security
-  app.listen(PORT, '127.0.0.1', () => {
-    console.log(`[API] Security Studio API running on http://127.0.0.1:${PORT}`);
-    console.log(`[API] Health check: http://127.0.0.1:${PORT}/api/health`);
+  // Discover and load plugins
+  const pluginResult = await loadPlugins();
+  console.log(
+    `[API] Plugins: ${pluginResult.loaded} loaded, ${pluginResult.failed} failed`
+  );
+  if (pluginResult.errors.length > 0) {
+    for (const err of pluginResult.errors) {
+      console.warn(`[API]   ↳ ${err.id}: ${err.error}`);
+    }
+  }
+
+  const assignedPort = parseInt(process.env['PORT'] ?? '4000', 10);
+
+  app.listen(assignedPort, '127.0.0.1', () => {
+    console.log(`[API] Security Studio API running on http://127.0.0.1:${assignedPort}`);
+    console.log(`[API] Health check: http://127.0.0.1:${assignedPort}/api/health`);
   });
 }
 

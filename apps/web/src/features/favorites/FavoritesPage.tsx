@@ -4,7 +4,7 @@ import * as Icons from 'lucide-react';
 import { toolRegistry } from '@security-studio/tool-sdk';
 import { useFavorites } from '@/hooks/useFavorites';
 
-type LucideIcon = React.ComponentType<{ size?: number; className?: string }>;
+type LucideIcon = React.ComponentType<{ size?: number; className?: string; strokeWidth?: number }>;
 function getIcon(name: string): LucideIcon {
   return (Icons as unknown as Record<string, LucideIcon>)[name] || Icons.Wrench;
 }

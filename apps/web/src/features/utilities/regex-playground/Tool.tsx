@@ -3,6 +3,7 @@ import { ToolLayout } from '@/components/ToolLayout';
 import { InputPanel } from '@/components/InputPanel';
 import { manifest } from './manifest';
 import { executeRegex } from './logic';
+import readme from './README.md?raw';
 
 const FLAG_OPTIONS = [
   { key: 'g', label: 'Global' },
@@ -13,6 +14,12 @@ const FLAG_OPTIONS = [
 ];
 
 export default function RegexPlaygroundTool() {
+  const handleLoadExample = (example: any) => {
+    if (example.input?.pattern !== undefined) setPattern(example.input.pattern);
+    if (example.input?.flags !== undefined) setFlags(example.input.flags);
+    if (example.input?.testString !== undefined) setTestString(example.input.testString);
+  };
+
   const [pattern, setPattern] = useState('');
   const [flags, setFlags] = useState('g');
   const [testString, setTestString] = useState('');
@@ -27,7 +34,7 @@ export default function RegexPlaygroundTool() {
   };
 
   return (
-    <ToolLayout manifest={manifest}>
+    <ToolLayout onLoadExample={handleLoadExample} readme={readme} manifest={manifest}>
       <div className="space-y-4">
         <InputPanel title="Pattern">
           <div className="flex items-center gap-2">

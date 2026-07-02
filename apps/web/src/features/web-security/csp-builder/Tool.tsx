@@ -4,8 +4,14 @@ import { ToolLayout } from '@/components/ToolLayout';
 import { OutputPanel } from '@/components/OutputPanel';
 import { manifest } from './manifest';
 import { CSP_DIRECTIVES, COMMON_VALUES, buildCspString, type CspPolicy, type CspDirective } from './logic';
+import readme from './README.md?raw';
 
 export default function CspBuilderTool() {
+  const handleLoadExample = (example: any) => {
+    if (example.input?.policy !== undefined) setPolicy(example.input.policy);
+    if (example.input?.activeDirectives !== undefined) setActiveDirectives(example.input.activeDirectives);
+  };
+
   const [policy, setPolicy] = useState<CspPolicy>({ 'default-src': ["'self'"] });
   const [activeDirectives, setActiveDirectives] = useState<CspDirective[]>(['default-src']);
 
@@ -42,7 +48,7 @@ export default function CspBuilderTool() {
   };
 
   return (
-    <ToolLayout manifest={manifest} outputText={cspString}>
+    <ToolLayout onLoadExample={handleLoadExample} readme={readme} manifest={manifest} outputText={cspString}>
       <div className="space-y-4">
         {/* Add directive */}
         <div className="flex items-center gap-2 flex-wrap">

@@ -4,8 +4,15 @@ import { InputPanel } from '@/components/InputPanel';
 import { OutputPanel } from '@/components/OutputPanel';
 import { manifest } from './manifest';
 import { encodeHtmlEntities, decodeHtmlEntities } from './logic';
+import readme from './README.md?raw';
 
 export default function HtmlEntitiesTool() {
+  const handleLoadExample = (example: any) => {
+    if (example.input?.input !== undefined) setInput(example.input.input);
+    if (example.input?.output !== undefined) setOutput(example.input.output);
+    if (example.input?.mode !== undefined) setMode(example.input.mode);
+  };
+
   const [input, setInput] = useState('');
   const [output, setOutput] = useState('');
   const [mode, setMode] = useState<'encode' | 'decode'>('encode');
@@ -16,7 +23,7 @@ export default function HtmlEntitiesTool() {
   };
 
   return (
-    <ToolLayout manifest={manifest} outputText={output}>
+    <ToolLayout onLoadExample={handleLoadExample} readme={readme} manifest={manifest} outputText={output}>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         <InputPanel title="Input">
           <div className="flex items-center gap-2 mb-3">

@@ -10,6 +10,8 @@ import { Toaster } from 'react-hot-toast';
 import { RootLayout } from '@/layouts/RootLayout';
 import { toolRegistry } from '@security-studio/tool-sdk';
 import { ToolLayout } from '@/components/ToolLayout';
+import { WorkspaceProvider } from '@/contexts/WorkspaceContext';
+import { Suspense } from 'react';
 
 // Lazy-loaded pages
 import { Dashboard } from '@/features/dashboard/Dashboard';
@@ -18,6 +20,10 @@ import { FavoritesPage } from '@/features/favorites/FavoritesPage';
 import { HistoryPage } from '@/features/history/HistoryPage';
 import { SettingsPage } from '@/features/settings/SettingsPage';
 import { AboutPage } from '@/features/about/AboutPage';
+import { WorkspacesPage } from '@/features/workspaces/WorkspacesPage';
+import { WorkspaceDetailPage } from '@/features/workspaces/WorkspaceDetailPage';
+import { PluginsPage } from '@/features/plugins/PluginsPage';
+import { PluginRunner } from '@/features/plugins/PluginRunner';
 
 // Query client
 const queryClient = new QueryClient({
@@ -67,7 +73,15 @@ const toolRoute = createRoute({
     }
 
     const ToolComponent = tool.component;
-    return <ToolComponent />;
+    return (
+      <Suspense fallback={
+        <div className="flex items-center justify-center h-full text-text-muted text-sm py-12">
+          Loading tool interface...
+        </div>
+      }>
+        <ToolComponent />
+      </Suspense>
+    );
   },
 });
 
@@ -95,6 +109,36 @@ const aboutRoute = createRoute({
   component: AboutPage,
 });
 
+const workspacesRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/workspaces',
+  component: WorkspacesPage,
+});
+
+const workspaceDetailRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/workspaces/$workspaceId',
+  component: function WorkspaceDetailRouteComponent() {
+    const { workspaceId } = workspaceDetailRoute.useParams();
+    return <WorkspaceDetailPage workspaceId={workspaceId} />;
+  },
+});
+
+const pluginsRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/plugins',
+  component: PluginsPage,
+});
+
+const pluginRunnerRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/plugins/$pluginId',
+  component: function PluginRunnerRouteComponent() {
+    const { pluginId } = pluginRunnerRoute.useParams();
+    return <PluginRunner pluginId={pluginId} />;
+  },
+});
+
 // Build route tree
 const routeTree = rootRoute.addChildren([
   indexRoute,
@@ -104,6 +148,10 @@ const routeTree = rootRoute.addChildren([
   historyRoute,
   settingsRoute,
   aboutRoute,
+  workspacesRoute,
+  workspaceDetailRoute,
+  pluginsRoute,
+  pluginRunnerRoute,
 ]);
 
 const hashHistory = createHashHistory();
@@ -124,21 +172,23 @@ declare module '@tanstack/react-router' {
 export function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <RouterProvider router={router} />
-      <Toaster
-        position="bottom-right"
-        toastOptions={{
-          className: 'toast-custom',
-          duration: 2000,
-          style: {
-            background: '#161B22',
-            color: '#E6EDF3',
-            border: '1px solid #30363D',
-            borderRadius: '10px',
-            fontSize: '13px',
-          },
-        }}
-      />
+      <WorkspaceProvider>
+        <RouterProvider router={router} />
+        <Toaster
+          position="bottom-right"
+          toastOptions={{
+            className: 'toast-custom',
+            duration: 2000,
+            style: {
+              background: '#161B22',
+              color: '#E6EDF3',
+              border: '1px solid #30363D',
+              borderRadius: '10px',
+              fontSize: '13px',
+            },
+          }}
+        />
+      </WorkspaceProvider>
     </QueryClientProvider>
   );
 }

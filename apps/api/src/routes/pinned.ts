@@ -67,7 +67,7 @@ router.post('/', validate(addPinnedSchema), async (req, res, next) => {
 // PUT /api/pinned/:toolId — update order
 router.put('/:toolId', validate(updatePinnedSchema), async (req, res, next) => {
   try {
-    const { toolId } = req.params;
+    const toolId = req.params['toolId'] as string;
     const { order } = req.body as z.infer<typeof updatePinnedSchema>;
 
     const existing = await prisma.pinnedTool.findUnique({ where: { toolId } });
@@ -96,7 +96,7 @@ router.put('/:toolId', validate(updatePinnedSchema), async (req, res, next) => {
 // DELETE /api/pinned/:toolId — remove a pinned tool
 router.delete('/:toolId', async (req, res, next) => {
   try {
-    const { toolId } = req.params;
+    const toolId = req.params['toolId'] as string;
 
     await prisma.pinnedTool.deleteMany({
       where: { toolId },

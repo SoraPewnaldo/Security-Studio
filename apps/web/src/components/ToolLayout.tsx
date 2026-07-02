@@ -7,6 +7,8 @@ import { toolRegistry } from '@security-studio/tool-sdk';
 import { useFavorites } from '@/hooks/useFavorites';
 import { useAddHistory } from '@/hooks/useHistory';
 import { useEffect } from 'react';
+import ReactMarkdown from 'react-markdown';
+import type { ToolExample } from '@security-studio/types';
 
 type LucideIcon = React.ComponentType<{ size?: number; className?: string }>;
 function getIcon(name: string): LucideIcon {
@@ -44,7 +46,19 @@ function CopyButton({ text, label = 'Copy' }: { text: string; label?: string }) 
   );
 }
 
-export function ToolLayout({ children, manifest: passedManifest, outputText: passedOutputText }: { children?: React.ReactNode, manifest?: any, outputText?: string }) {
+export function ToolLayout({ 
+  children, 
+  manifest: passedManifest, 
+  outputText: passedOutputText,
+  readme,
+  onLoadExample,
+}: { 
+  children?: React.ReactNode, 
+  manifest?: any, 
+  outputText?: string,
+  readme?: string,
+  onLoadExample?: (example: ToolExample) => void,
+}) {
   const matchRoute = useMatchRoute();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
@@ -63,7 +77,9 @@ export function ToolLayout({ children, manifest: passedManifest, outputText: pas
       addHistory.mutate({
         toolId: manifest.id,
         toolName: manifest.name,
-        action: 'Opened Tool'
+        action: 'Opened Tool',
+        inputSummary: '',
+        outputSummary: ''
       });
     }
   }, [manifest?.id]);
@@ -166,11 +182,46 @@ export function ToolLayout({ children, manifest: passedManifest, outputText: pas
       <div className="flex-1 overflow-y-auto p-8 bg-bg">
         <div className="max-w-4xl">
           {activeTab === 'tool' && children}
+          
           {activeTab === 'examples' && (
-            <div className="text-sm text-text-secondary">Examples for {manifest.name} will be added here.</div>
+            <div className="space-y-4">
+              {manifest.examples?.length > 0 ? (
+                manifest.examples.map((example: ToolExample, idx: number) => (
+                  <div key={idx} className="p-5 rounded-lg border border-border bg-surface flex items-start justify-between group">
+                    <div>
+                      <h3 className="text-[14px] font-medium text-text">{example.label}</h3>
+                      <p className="text-[13px] text-text-secondary mt-1">{example.description}</p>
+                    </div>
+                    <button
+                      onClick={() => {
+                        onLoadExample?.(example);
+                        setActiveTab('tool');
+                      }}
+                      className="px-3 py-1.5 text-[12px] font-medium rounded-md bg-text text-bg
+                        opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer"
+                    >
+                      Load Example
+                    </button>
+                  </div>
+                ))
+              ) : (
+                <div className="text-sm text-text-secondary text-center py-12 border border-dashed border-border/50 rounded-xl">
+                  No examples provided for {manifest.name}.
+                </div>
+              )}
+            </div>
           )}
+          
           {activeTab === 'docs' && (
-            <div className="text-sm text-text-secondary">Documentation for {manifest.name} will be available here.</div>
+            <div className="prose prose-sm prose-invert max-w-none prose-headings:font-medium prose-a:text-primary">
+              {readme ? (
+                <ReactMarkdown>{readme}</ReactMarkdown>
+              ) : (
+                <div className="text-sm text-text-secondary text-center py-12 border border-dashed border-border/50 rounded-xl">
+                  Documentation missing for {manifest.name}.
+                </div>
+              )}
+            </div>
           )}
         </div>
       </div>

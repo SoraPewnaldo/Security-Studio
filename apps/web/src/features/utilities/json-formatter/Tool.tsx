@@ -5,8 +5,15 @@ import { InputPanel } from '@/components/InputPanel';
 import { OutputPanel } from '@/components/OutputPanel';
 import { manifest } from './manifest';
 import { formatJson, minifyJson, validateJson } from './logic';
+import readme from './README.md?raw';
 
 export default function JsonFormatterTool() {
+  const handleLoadExample = (example: any) => {
+    if (example.input?.input !== undefined) setInput(example.input.input);
+    if (example.input?.output !== undefined) setOutput(example.input.output);
+    if (example.input?.error !== undefined) setError(example.input.error);
+  };
+
   const [input, setInput] = useState('');
   const [output, setOutput] = useState('');
   const [error, setError] = useState('');
@@ -24,7 +31,7 @@ export default function JsonFormatterTool() {
   };
 
   return (
-    <ToolLayout manifest={manifest} outputText={output}>
+    <ToolLayout onLoadExample={handleLoadExample} readme={readme} manifest={manifest} outputText={output}>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         <InputPanel title="Input">
           {validation && (

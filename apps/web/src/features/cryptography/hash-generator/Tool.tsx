@@ -4,10 +4,18 @@ import { InputPanel } from '@/components/InputPanel';
 import { OutputPanel } from '@/components/OutputPanel';
 import { manifest } from './manifest';
 import { generateHash, type HashAlgorithm } from './logic';
+import readme from './README.md?raw';
 
 const ALGORITHMS: HashAlgorithm[] = ['SHA-256', 'SHA-512', 'SHA-1', 'MD5'];
 
 export default function HashGeneratorTool() {
+  const handleLoadExample = (example: any) => {
+    if (example.input?.input !== undefined) setInput(example.input.input);
+    if (example.input?.algorithm !== undefined) setAlgorithm(example.input.algorithm);
+    if (example.input?.output !== undefined) setOutput(example.input.output);
+    if (example.input?.allHashes !== undefined) setAllHashes(example.input.allHashes);
+  };
+
   const [input, setInput] = useState('');
   const [algorithm, setAlgorithm] = useState<HashAlgorithm>('SHA-256');
   const [output, setOutput] = useState('');
@@ -27,7 +35,7 @@ export default function HashGeneratorTool() {
   };
 
   return (
-    <ToolLayout manifest={manifest} outputText={output}>
+    <ToolLayout onLoadExample={handleLoadExample} readme={readme} manifest={manifest} outputText={output}>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         <InputPanel title="Input">
           <div className="flex items-center gap-2 mb-3">

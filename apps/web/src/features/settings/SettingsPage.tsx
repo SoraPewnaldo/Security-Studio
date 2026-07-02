@@ -1,4 +1,7 @@
+import { useState } from 'react';
 import { Settings, Keyboard, Database } from 'lucide-react';
+import toast from 'react-hot-toast';
+import { useQueryClient } from '@tanstack/react-query';
 
 const SHORTCUTS = [
   { keys: 'Ctrl+K', action: 'Open Command Palette' },
@@ -11,6 +14,53 @@ const SHORTCUTS = [
 ];
 
 export function SettingsPage() {
+  const [exporting, setExporting] = useState(false);
+  const [resetting, setResetting] = useState(false);
+  const queryClient = useQueryClient();
+
+  const handleExport = async () => {
+    setExporting(true);
+    try {
+      const res = await fetch('/api/settings/export');
+      const json = await res.json();
+      if (!json.success) throw new Error(json.error || 'Export failed');
+
+      const blob = new Blob([JSON.stringify(json.data, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `security-studio-export-${new Date().toISOString().slice(0, 10)}.json`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      
+      toast.success('Data exported successfully');
+    } catch (e: any) {
+      toast.error(`Export failed: ${e.message}`);
+    } finally {
+      setExporting(false);
+    }
+  };
+
+  const handleReset = async () => {
+    if (!window.confirm('Are you absolutely sure you want to delete all local data? This cannot be undone.')) return;
+    
+    setResetting(true);
+    try {
+      const res = await fetch('/api/settings/reset', { method: 'POST' });
+      const json = await res.json();
+      if (!json.success) throw new Error(json.error || 'Reset failed');
+
+      await queryClient.invalidateQueries();
+      toast.success('All data has been reset');
+    } catch (e: any) {
+      toast.error(`Reset failed: ${e.message}`);
+    } finally {
+      setResetting(false);
+    }
+  };
+
   return (
     <div className="p-8 max-w-3xl mx-auto space-y-10">
       <div>
@@ -47,13 +97,17 @@ export function SettingsPage() {
             All your data is stored locally using SQLite. No sensitive information ever leaves your machine unless you explicitly export it.
           </p>
           <div className="flex gap-3">
-            <button className="px-4 py-2 text-[13px] font-medium rounded-md border border-border text-text bg-surface-hover
-              hover:border-[#444] transition-colors cursor-pointer">
-              Export Data
+            <button 
+              onClick={handleExport}
+              disabled={exporting}
+              className="px-4 py-2 text-[13px] font-medium rounded-md border border-border text-text bg-surface-hover hover:border-[#444] transition-colors cursor-pointer disabled:opacity-50">
+              {exporting ? 'Exporting...' : 'Export Data'}
             </button>
-            <button className="px-4 py-2 text-[13px] font-medium rounded-md border border-danger/30 text-danger bg-danger/10
-              hover:bg-danger/20 hover:border-danger/50 transition-colors cursor-pointer">
-              Reset All Data
+            <button 
+              onClick={handleReset}
+              disabled={resetting}
+              className="px-4 py-2 text-[13px] font-medium rounded-md border border-danger/30 text-danger bg-danger/10 hover:bg-danger/20 hover:border-danger/50 transition-colors cursor-pointer disabled:opacity-50">
+              {resetting ? 'Resetting...' : 'Reset All Data'}
             </button>
           </div>
         </div>

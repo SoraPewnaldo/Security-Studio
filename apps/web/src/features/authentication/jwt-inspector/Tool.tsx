@@ -4,8 +4,15 @@ import { ToolLayout } from '@/components/ToolLayout';
 import { CopyButton } from '@/components/CopyButton';
 import { manifest } from './manifest';
 import { decodeJwt, type JwtDecoded } from './logic';
+import readme from './README.md?raw';
 
 export default function JwtInspectorTool() {
+  const handleLoadExample = (example: any) => {
+    if (example.input?.token !== undefined) setToken(example.input.token);
+    if (example.input?.result !== undefined) setResult(example.input.result);
+    if (example.input?.error !== undefined) setError(example.input.error);
+  };
+
   const [token, setToken] = useState('');
   const [result, setResult] = useState<JwtDecoded | null>(null);
   const [error, setError] = useState('');
@@ -21,7 +28,7 @@ export default function JwtInspectorTool() {
   };
 
   return (
-    <ToolLayout manifest={manifest} outputText={result ? JSON.stringify(result.payload, null, 2) : ''}>
+    <ToolLayout onLoadExample={handleLoadExample} readme={readme} manifest={manifest} outputText={result ? JSON.stringify(result.payload, null, 2) : ''}>
       <div className="space-y-4">
         {/* Input */}
         <div className="rounded-lg border border-border bg-surface p-4">

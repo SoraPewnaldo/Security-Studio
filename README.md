@@ -15,9 +15,18 @@ The modern open-source workspace for security engineers.
 - **Keyboard-First** — Full keyboard navigation and shortcuts
 - **Offline-Ready** — Works without internet (all computation is local)
 
-## Quick Start (Contributor Edition)
+## Installation
 
-A contributor should only need three commands to spin up the entire application.
+### Desktop Users
+
+For the best native experience on Windows, download the self-contained Desktop installer:
+1. Go to the [GitHub Releases](../../releases) page.
+2. Download `SecurityStudio-Setup.exe`.
+3. Install and run! The desktop version bundles the backend, database, and frontend seamlessly in a standalone environment using Tauri.
+
+### Contributors
+
+To run the application in Contributor Mode for development, you just need Node.js (v20+):
 
 ```bash
 git clone https://github.com/SoraPewnaldo/security-studio.git
@@ -27,51 +36,37 @@ npm run dev
 ```
 
 Everything else happens automatically:
-- SQLite database is created and initialized.
+- SQLite database is created in `/data`.
 - Prisma client is generated.
-- Express backend starts and binds to `127.0.0.1`.
-- React frontend starts and opens in your browser.
+- Express backend starts and binds to `127.0.0.1:4000`.
+- React frontend starts and opens via Vite.
 
-*Note: No Docker, no Node versions managers, no manual migrations needed.*
-
-Frontend runs on [http://localhost:5173](http://localhost:5173) (or 3000 depending on Vite config)
-Backend runs on [http://127.0.0.1:4000](http://127.0.0.1:4000)
-
-## Tech Stack
-
-| Layer | Technology |
-|-------|-----------|
-| Frontend | React 19, TypeScript, Vite, Tailwind CSS v4 |
-| UI | Lucide Icons, Framer Motion |
-| Routing | TanStack Router |
-| Data | TanStack Query |
-| Backend | Express 5, TypeScript |
-| ORM | Prisma |
-| Database | SQLite |
-| Search | Fuse.js |
-| Deployment | Docker Compose |
+*Note: No Docker, no manual migrations needed.*
 
 ## Architecture
 
-```
+The project is built as a monorepo containing everything needed for both development and production deployment.
+
+```text
 security-studio/
 ├── apps/
-│   ├── web/           # React frontend
-│   └── api/           # Express backend
+│   ├── web/           # React frontend (Vite)
+│   ├── api/           # Express backend (Prisma + SQLite)
+│   └── desktop/       # Tauri Desktop Shell
 ├── packages/
 │   ├── types/         # Shared TypeScript types
 │   ├── tool-sdk/      # Tool registry & SDK
 │   ├── core/          # Event bus, search index
 │   └── utils/         # Shared utilities
-├── docker/            # Dockerfiles
-└── data/              # SQLite database
+├── data/              # SQLite database (auto-generated)
+└── cache/             # Inter-process handshakes
 ```
 
-## Adding a Tool
+## Contributing & Adding Tools
 
 Create a folder in `apps/web/src/features/<category>/<tool-id>/`:
 
-```
+```text
 my-tool/
 ├── manifest.ts    # Tool metadata (name, tags, examples)
 ├── Tool.tsx       # React component
@@ -82,7 +77,7 @@ my-tool/
 
 Register it in `src/features/register-tools.ts`. The tool automatically appears in the sidebar, search, command palette, and dashboard.
 
-## MVP Tools
+## MVP Tools Included
 
 | Category | Tools |
 |----------|-------|

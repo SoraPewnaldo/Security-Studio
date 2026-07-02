@@ -3,8 +3,15 @@ import { ToolLayout } from '@/components/ToolLayout';
 import { InputPanel } from '@/components/InputPanel';
 import { manifest } from './manifest';
 import { analyzeIp, type IpAnalysis } from './logic';
+import readme from './README.md?raw';
 
 export default function IpUtilsTool() {
+  const handleLoadExample = (example: any) => {
+    if (example.input?.input !== undefined) setInput(example.input.input);
+    if (example.input?.result !== undefined) setResult(example.input.result);
+    if (example.input?.error !== undefined) setError(example.input.error);
+  };
+
   const [input, setInput] = useState('');
   const [result, setResult] = useState<IpAnalysis | null>(null);
   const [error, setError] = useState('');
@@ -15,7 +22,7 @@ export default function IpUtilsTool() {
   };
 
   return (
-    <ToolLayout manifest={manifest}>
+    <ToolLayout onLoadExample={handleLoadExample} readme={readme} manifest={manifest}>
       <div className="space-y-4">
         <InputPanel title="IP Address">
           <div className="flex gap-2">

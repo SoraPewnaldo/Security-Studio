@@ -5,8 +5,16 @@ import { manifest } from './manifest';
 import { generateBulk, formatUuid } from './logic';
 import { copyToClipboard } from '@security-studio/utils';
 import toast from 'react-hot-toast';
+import readme from './README.md?raw';
 
 export default function UuidGeneratorTool() {
+  const handleLoadExample = (example: any) => {
+    if (example.input?.count !== undefined) setCount(example.input.count);
+    if (example.input?.uppercase !== undefined) setUppercase(example.input.uppercase);
+    if (example.input?.hyphens !== undefined) setHyphens(example.input.hyphens);
+    if (example.input?.uuids !== undefined) setUuids(example.input.uuids);
+  };
+
   const [count, setCount] = useState(5);
   const [uppercase, setUppercase] = useState(false);
   const [hyphens, setHyphens] = useState(true);
@@ -20,7 +28,7 @@ export default function UuidGeneratorTool() {
   const handleCopyAll = async () => { await copyToClipboard(formatted.join('\n')); toast.success('All copied!'); };
 
   return (
-    <ToolLayout manifest={manifest} outputText={formatted.join('\n')}>
+    <ToolLayout onLoadExample={handleLoadExample} readme={readme} manifest={manifest} outputText={formatted.join('\n')}>
       <div className="space-y-4">
         <div className="rounded-lg border border-border bg-surface p-4">
           <div className="flex items-end gap-4 flex-wrap">

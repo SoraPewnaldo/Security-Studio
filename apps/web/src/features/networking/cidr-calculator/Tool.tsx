@@ -3,8 +3,15 @@ import { ToolLayout } from '@/components/ToolLayout';
 import { InputPanel } from '@/components/InputPanel';
 import { manifest } from './manifest';
 import { parseCidr, type CidrResult } from './logic';
+import readme from './README.md?raw';
 
 export default function CidrCalculatorTool() {
+  const handleLoadExample = (example: any) => {
+    if (example.input?.input !== undefined) setInput(example.input.input);
+    if (example.input?.result !== undefined) setResult(example.input.result);
+    if (example.input?.error !== undefined) setError(example.input.error);
+  };
+
   const [input, setInput] = useState('');
   const [result, setResult] = useState<CidrResult | null>(null);
   const [error, setError] = useState('');
@@ -17,7 +24,7 @@ export default function CidrCalculatorTool() {
   const outputText = result ? Object.entries(result).map(([k, v]) => `${k}: ${v}`).join('\n') : '';
 
   return (
-    <ToolLayout manifest={manifest} outputText={outputText}>
+    <ToolLayout onLoadExample={handleLoadExample} readme={readme} manifest={manifest} outputText={outputText}>
       <div className="space-y-4">
         <InputPanel title="CIDR Notation">
           <div className="flex gap-2">

@@ -6,6 +6,9 @@ import { useFavorites } from '@/hooks/useFavorites';
 import { useHistory } from '@/hooks/useHistory';
 import { getGreeting, relativeTime } from '@security-studio/utils';
 import logo from '@/assets/logo.png';
+import DotField from '@/components/ui/DotField';
+
+import { useActiveWorkspace } from '@/contexts/WorkspaceContext';
 
 type LucideIcon = React.ComponentType<{ size?: number; className?: string }>;
 function getIcon(name: string): LucideIcon {
@@ -16,9 +19,18 @@ export function Dashboard() {
   const navigate = useNavigate();
   const { data: favorites = [] } = useFavorites();
   const { data: history = [] } = useHistory();
+  const { activeWorkspace } = useActiveWorkspace();
 
   const allTools = toolRegistry.getAll();
-  const favoriteTools = allTools.filter((t) => favorites.some((f) => f.toolId === t.manifest.id));
+  
+  const workspaceTools = activeWorkspace?.tools 
+    ? allTools.filter(t => activeWorkspace.tools?.some(wt => wt.toolId === t.manifest.id))
+    : allTools;
+    
+  const favoriteTools = workspaceTools.filter((t) => favorites.some((f) => f.toolId === t.manifest.id));
+  const workspaceHistory = activeWorkspace 
+    ? history.filter(h => workspaceTools.some(t => t.manifest.id === h.toolId))
+    : history;
 
   return (
     <div className="p-4 md:p-6 lg:p-8 max-w-[1400px] mx-auto space-y-6">
@@ -31,12 +43,29 @@ export function Dashboard() {
         <div className="p-5 flex flex-col md:flex-row gap-8 items-center md:items-start">
           {/* Visual Left */}
           <div className="w-full md:w-[400px] aspect-[16/9] rounded-md border border-border bg-surface-hover flex flex-col items-center justify-center p-6 text-center relative overflow-hidden group cursor-pointer">
-            <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-            <div className="mb-8 mt-4">
-              <img src={logo} alt="Security Studio" className="w-20 h-20 object-contain brightness-0 invert opacity-90 transition-transform group-hover:scale-110" />
+            <div className="absolute inset-0 z-0">
+              <DotField
+                dotRadius={1.5}
+                dotSpacing={14}
+                bulgeStrength={67}
+                glowRadius={160}
+                sparkle={true}
+                waveAmplitude={0}
+                gradientFrom="#3b82f6"
+                gradientTo="#8b5cf6"
+                glowColor="rgba(59, 130, 246, 0.2)"
+              />
             </div>
-            <h3 className="text-xl font-semibold text-text">{getGreeting()}, Analyst</h3>
-            <p className="text-xs text-text-secondary mt-2">Ready to secure the environment.</p>
+            <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity z-10 pointer-events-none" />
+            <div className="mb-8 mt-4 z-10">
+              <img src={logo} alt="Security Studio" className="w-20 h-20 object-contain brightness-0 invert opacity-90 transition-transform group-hover:scale-110 drop-shadow-xl" />
+            </div>
+            <h3 className="text-xl font-semibold text-text z-10 drop-shadow-md">
+              {activeWorkspace ? activeWorkspace.name : 'Global Workspace'}
+            </h3>
+            <p className="text-xs text-text-secondary mt-2 z-10 drop-shadow-md">
+              {activeWorkspace ? activeWorkspace.description : 'Ready to secure the environment.'}
+            </p>
           </div>
           
           {/* Details Right */}
@@ -51,11 +80,11 @@ export function Dashboard() {
             </div>
             <div>
               <div className="text-[11px] text-text-muted mb-1">Available Tools</div>
-              <div className="text-[13px] font-mono text-text">{toolRegistry.size} <span className="text-text-secondary font-sans">modules loaded</span></div>
+              <div className="text-[13px] font-mono text-text">{workspaceTools.length} <span className="text-text-secondary font-sans">modules loaded</span></div>
             </div>
             <div>
               <div className="text-[11px] text-text-muted mb-1">Recent Activity Count</div>
-              <div className="text-[13px] font-mono text-text">{history.length} <span className="text-text-secondary font-sans">events logged today</span></div>
+              <div className="text-[13px] font-mono text-text">{workspaceHistory.length} <span className="text-text-secondary font-sans">events logged today</span></div>
             </div>
           </div>
         </div>
@@ -73,7 +102,7 @@ export function Dashboard() {
           </div>
           <div className="p-4 flex-1">
             <div className="space-y-2">
-              {(favoriteTools.length > 0 ? favoriteTools : allTools).slice(0, 5).map((tool) => {
+              {(favoriteTools.length > 0 ? favoriteTools : workspaceTools).slice(0, 5).map((tool) => {
                 const ToolIcon = getIcon(tool.manifest.icon);
                 return (
                   <button key={tool.manifest.id}
@@ -117,7 +146,7 @@ export function Dashboard() {
             </div>
             
             <div className="space-y-4">
-              {history.length > 0 ? history.slice(0, 3).map((entry) => {
+              {workspaceHistory.length > 0 ? workspaceHistory.slice(0, 3).map((entry) => {
                 const tool = toolRegistry.getById(entry.toolId);
                 const EntryIcon = tool ? getIcon(tool.manifest.icon) : Activity;
                 return (
@@ -152,7 +181,7 @@ export function Dashboard() {
                 </div>
                 <span className="text-[13px] font-medium text-text">Total Tools</span>
               </div>
-              <span className="text-[14px] font-mono font-medium text-text">{toolRegistry.size}</span>
+              <span className="text-[14px] font-mono font-medium text-text">{workspaceTools.length}</span>
             </div>
             
             <div className="flex items-center justify-between">
@@ -172,7 +201,7 @@ export function Dashboard() {
                 </div>
                 <span className="text-[13px] font-medium text-text">History Events</span>
               </div>
-              <span className="text-[14px] font-mono font-medium text-text">{history.length}</span>
+              <span className="text-[14px] font-mono font-medium text-text">{workspaceHistory.length}</span>
             </div>
 
             <button onClick={() => navigate({ to: '/history' })} className="mt-4 px-4 py-2 w-full text-[12px] font-medium text-text border border-border rounded-md hover:bg-surface-hover transition-colors cursor-pointer">

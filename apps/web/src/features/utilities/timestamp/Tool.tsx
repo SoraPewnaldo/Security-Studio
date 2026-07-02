@@ -4,8 +4,16 @@ import { ToolLayout } from '@/components/ToolLayout';
 import { InputPanel } from '@/components/InputPanel';
 import { manifest } from './manifest';
 import { convertTimestamp, getCurrentTimestamp, type TimestampResult } from './logic';
+import readme from './README.md?raw';
 
 export default function TimestampTool() {
+  const handleLoadExample = (example: any) => {
+    if (example.input?.input !== undefined) setInput(example.input.input);
+    if (example.input?.result !== undefined) setResult(example.input.result);
+    if (example.input?.error !== undefined) setError(example.input.error);
+    if (example.input?.liveTimestamp !== undefined) setLiveTimestamp(example.input.liveTimestamp);
+  };
+
   const [input, setInput] = useState('');
   const [result, setResult] = useState<TimestampResult | null>(null);
   const [error, setError] = useState('');
@@ -24,7 +32,7 @@ export default function TimestampTool() {
   const handleNow = () => { setInput('now'); handleConvert('now'); };
 
   return (
-    <ToolLayout manifest={manifest}>
+    <ToolLayout onLoadExample={handleLoadExample} readme={readme} manifest={manifest}>
       <div className="space-y-4">
         {/* Live clock */}
         <div className="flex items-center gap-3 rounded-lg border border-border bg-surface p-4">

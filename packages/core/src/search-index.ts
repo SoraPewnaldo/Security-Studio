@@ -1,10 +1,10 @@
-import Fuse from 'fuse.js';
+import Fuse, { type FuseResultMatch } from 'fuse.js';
 import type { ToolManifest } from '@security-studio/types';
 
 export interface SearchResult {
   item: ToolManifest;
   score: number;
-  matches: ReadonlyArray<Fuse.FuseResultMatch> | undefined;
+  matches: ReadonlyArray<FuseResultMatch> | undefined;
 }
 
 /**
