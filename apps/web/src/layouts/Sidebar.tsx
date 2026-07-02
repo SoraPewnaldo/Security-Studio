@@ -3,7 +3,7 @@ import { useNavigate, useMatchRoute } from '@tanstack/react-router';
 import {
   Search,
   Home, Star, Clock, Settings, Info, ChevronDown, ChevronRight,
-  FolderOpen, Puzzle, ArrowLeftRight, Check,
+  FolderOpen, Puzzle, ArrowLeftRight, Check, BookMarked,
 } from 'lucide-react';
 import * as Icons from 'lucide-react';
 import { toolRegistry } from '@security-studio/tool-sdk';
@@ -336,6 +336,14 @@ export function Sidebar() {
 
         {/* Separator */}
         <div className="h-px bg-border my-4 mx-2" />
+
+        {/* Playbooks */}
+        <NavItem
+          icon={<BookMarked size={14} />}
+          label="Playbooks"
+          to="/playbooks"
+          active={!!matchRoute({ to: '/playbooks', fuzzy: true })}
+        />
 
         {/* Plugins */}
         <NavItem

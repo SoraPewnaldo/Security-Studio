@@ -273,4 +273,51 @@ router.get('/asn', async (req, res, next) => {
   }
 });
 
+// POST /api/networking/http-proxy — Proxy HTTP queries
+router.post('/http-proxy', async (req, res) => {
+  try {
+    const { url, method, headers = {}, body } = req.body;
+    if (!url) {
+      res.status(400).json({ success: false, error: 'url parameter is required' });
+      return;
+    }
+
+    const requestOptions: RequestInit = {
+      method: (method || 'GET').toUpperCase(),
+      headers: headers,
+    };
+
+    if (body && ['POST', 'PUT', 'PATCH', 'DELETE'].includes(requestOptions.method || '')) {
+      requestOptions.body = typeof body === 'object' ? JSON.stringify(body) : body;
+    }
+
+    const startTime = Date.now();
+    const response = await fetch(url, requestOptions);
+    const duration = Date.now() - startTime;
+
+    const responseHeaders: Record<string, string> = {};
+    response.headers.forEach((val, key) => {
+      responseHeaders[key] = val;
+    });
+
+    const responseBody = await response.text();
+
+    res.json({
+      success: true,
+      data: {
+        status: response.status,
+        statusText: response.statusText,
+        headers: responseHeaders,
+        body: responseBody,
+        duration,
+      }
+    });
+  } catch (error: any) {
+    res.json({
+      success: false,
+      error: error.message || 'Request failed'
+    });
+  }
+});
+
 export default router;

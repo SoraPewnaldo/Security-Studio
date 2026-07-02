@@ -31,6 +31,7 @@ import snippetsRouter from './routes/snippets.js';
 import searchRouter from './routes/search.js';
 import pluginsRouter from './routes/plugins.js';
 import networkingRouter from './routes/networking.js';
+import playbooksRouter from './routes/playbooks.js';
 import { loadPlugins } from './lib/plugin-loader.js';
 
 const app = express();
@@ -76,6 +77,7 @@ app.use('/api/snippets', snippetsRouter);
 app.use('/api/search', searchRouter);
 app.use('/api/plugins', pluginsRouter);
 app.use('/api/networking', networkingRouter);
+app.use('/api/playbooks', playbooksRouter);
 
 app.use(errorHandler);
 

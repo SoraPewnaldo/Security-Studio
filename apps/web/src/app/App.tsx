@@ -24,6 +24,8 @@ import { WorkspacesPage } from '@/features/workspaces/WorkspacesPage';
 import { WorkspaceDetailPage } from '@/features/workspaces/WorkspaceDetailPage';
 import { PluginsPage } from '@/features/plugins/PluginsPage';
 import { PluginRunner } from '@/features/plugins/PluginRunner';
+import { PlaybooksDashboard, PlaybookRunner } from '@/features/playbooks/PlaybooksPage';
+import HttpClientTool from '@/features/networking/http-client/Tool';
 
 // Query client
 const queryClient = new QueryClient({
@@ -139,6 +141,27 @@ const pluginRunnerRoute = createRoute({
   },
 });
 
+const playbooksRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/playbooks',
+  component: PlaybooksDashboard,
+});
+
+const playbookRunnerRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/playbooks/$playbookId',
+  component: function PlaybookRunnerRouteComponent() {
+    const { playbookId } = playbookRunnerRoute.useParams();
+    return <PlaybookRunner playbookId={playbookId} />;
+  },
+});
+
+const httpClientRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/tools/http-client',
+  component: HttpClientTool,
+});
+
 // Build route tree
 const routeTree = rootRoute.addChildren([
   indexRoute,
@@ -152,6 +175,9 @@ const routeTree = rootRoute.addChildren([
   workspaceDetailRoute,
   pluginsRoute,
   pluginRunnerRoute,
+  playbooksRoute,
+  playbookRunnerRoute,
+  httpClientRoute,
 ]);
 
 const hashHistory = createHashHistory();

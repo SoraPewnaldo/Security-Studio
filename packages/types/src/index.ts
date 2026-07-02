@@ -211,3 +211,12 @@ export type {
   PluginListItem,
 } from './plugin-types.js';
 
+export type {
+  Playbook,
+  PlaybookStep,
+  PlaybookSessionData,
+  PlaybookReport,
+  PlaybookRisk,
+  PlaybookBranch,
+  PlaybookAutoAnalysis,
+} from './playbook-types.js';
