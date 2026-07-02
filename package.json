@@ -13,7 +13,7 @@
     "dev": "concurrently \"npm run dev:api\" \"npm run dev:web\"",
     "dev:web": "npm run dev --workspace=apps/web",
     "dev:api": "npm run dev --workspace=apps/api",
-    "build": "npm run build --workspaces",
+    "build": "npm run build --workspaces --if-present",
     "build:web": "npm run build --workspace=apps/web",
     "build:api": "npm run build --workspace=apps/api",
     "lint": "npm run lint --workspaces --if-present",
@@ -21,6 +21,7 @@
     "db:generate": "npm run db:generate --workspace=apps/api",
     "db:migrate": "npm run db:migrate --workspace=apps/api",
     "db:push": "npm run db:push --workspace=apps/api",
+    "postinstall": "npm run db:generate",
     "clean": "rimraf node_modules apps/*/node_modules packages/*/node_modules"
   },
   "engines": {
