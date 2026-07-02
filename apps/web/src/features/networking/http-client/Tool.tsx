@@ -4,7 +4,7 @@
 import { useState, useCallback } from 'react';
 import { Send, Plus, Trash2, Copy, ExternalLink, Clock, CheckCircle, XCircle, AlertTriangle } from 'lucide-react';
 import { useNavigate } from '@tanstack/react-router';
-import { httpClientManifest } from './manifest';
+import { manifest } from './manifest';
 
 const API_BASE = 'http://127.0.0.1:4000';
 
@@ -140,7 +140,7 @@ export default function HttpClientTool() {
     }
   }, [url, method, headers, body]);
 
-  const loadExample = (example: typeof httpClientManifest.examples[0]) => {
+  const loadExample = (example: typeof manifest.examples[0]) => {
     setUrl(example.input.url);
     setMethod(example.input.method as HttpMethod);
     setBody(example.input.body || '');
@@ -182,7 +182,7 @@ export default function HttpClientTool() {
         <p className="text-[13px] text-text-secondary mt-0.5">Make HTTP requests and pipe responses directly to Security Studio tools.</p>
         {/* Examples */}
         <div className="flex gap-2 mt-3 flex-wrap">
-          {httpClientManifest.examples.map((ex) => (
+          {manifest.examples.map((ex) => (
             <button key={ex.label} onClick={() => loadExample(ex)}
               className="text-[11px] px-2.5 py-1 rounded-md border border-border text-text-secondary hover:text-text hover:border-primary/50 transition-colors">
               {ex.label}

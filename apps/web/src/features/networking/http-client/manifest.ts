@@ -1,4 +1,4 @@
-export const httpClientManifest = {
+export const manifest = {
   id: 'http-client',
   name: 'HTTP Client',
   description: 'Make HTTP requests and pipe responses directly to Security Studio tools. Auto-detects JWTs, cookies, JSON, and certificates.',
