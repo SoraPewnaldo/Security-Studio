@@ -25,6 +25,7 @@ cache/
 # Markdown and AI files (excluding README)
 *.md
 !README.md
+!CONTEXT.md
 .agents/
 Rules/
 
