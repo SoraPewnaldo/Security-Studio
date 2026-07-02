@@ -22,9 +22,9 @@ snippets/
 backups/
 cache/
 
-# Markdown and AI files (excluding README)
-*.md
-!README.md
+# Markdown files in root (excluding README)
+/*.md
+!/README.md
 .agents/
 Rules/
 

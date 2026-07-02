@@ -179,23 +179,21 @@ npm run dev
 
 The SQLite database is auto-created in `/data`. Open `http://localhost:3000`.
 
+## 📖 Developer Documentation
+
+If you want to modify, customize, or contribute to Security Studio, check out our guides:
+
+*   [**System Architecture**](file:///d:/Projects/AI%20studio/docs/architecture.md) — Mermaid diagrams, boundaries, and logic flows.
+*   [**Adding Custom Tools**](file:///d:/Projects/AI%20studio/docs/adding-tools.md) — How to add new tools using manifest-driven auto-discovery.
+*   [**Writing Playbooks**](file:///d:/Projects/AI%20studio/docs/writing-playbooks.md) — Schema definitions and steps to add new guided workflows.
+*   [**Release Notes**](file:///d:/Projects/AI%20studio/docs/releases/v1.2.0.md) — Detailed changelog for v1.2.0.
+
 ---
 
-## 🎨 Adding a Custom Tool
+## 💬 Community & Support
 
-Security Studio uses a **manifest-driven auto-discovery** architecture. To add a new tool:
-
-1. Create a folder under `apps/web/src/features/<category>/<tool-id>/`:
-
-```
-my-tool/
-├── manifest.ts    # Tool metadata (id, name, tags, examples)
-├── Tool.tsx       # React component (UI)
-├── logic.ts       # Processing functions
-└── README.md      # Tool documentation (rendered in the Documentation tab)
-```
-
-2. Save. The glob resolver in `register-tools.ts` automatically discovers the manifest and component, and registers the tool across the Search Index, Sidebar, and Command Palette — no manual registration required.
+*   **GitHub Discussions**: Enabled under settings. We use category headings for Q&A, plugin submissions, and custom tool ideas.
+*   **Report a Bug**: Open an issue using our structured issue templates under the [Issues](../../issues) tab.
 
 ---
 

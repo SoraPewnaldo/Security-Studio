@@ -1,0 +1,50 @@
+name: Security Tool Request
+description: Request a new security tool, utility, encoder, or crypto builder to be added to Security Studio.
+title: "[TOOL] "
+labels: ["tool-request"]
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Security Studio is manifest-driven, making it easy to add new tools. Use this template to request a tool you'd like to see included.
+  - type: input
+    id: name
+    attributes:
+      label: Tool Name
+      placeholder: e.g. JWT Brute Force Helper, DNSSEC Validator...
+    validations:
+      required: true
+  - type: select
+    id: category
+    attributes:
+      label: Category
+      description: Choose the primary category for this tool.
+      options:
+        - Authentication
+        - Cryptography
+        - Encoding
+        - Networking
+        - Utilities
+        - Web Security
+    validations:
+      required: true
+  - type: textarea
+    id: purpose
+    attributes:
+      label: What does this tool do?
+      description: Describe the calculations, inputs, and outputs of the tool.
+      placeholder: |
+        Inputs: ...
+        Processing: ...
+        Outputs: ...
+    validations:
+      required: true
+  - type: textarea
+    id: references
+    attributes:
+      label: Standard / Reference Material
+      description: Provide links to documentation, RFCs, or equivalent open-source libraries.
+      placeholder: e.g. https://rfc-editor.org/rfc/rfc7519.html
+    validations:
+      required: false

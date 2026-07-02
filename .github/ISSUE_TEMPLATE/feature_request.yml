@@ -1,0 +1,42 @@
+name: Feature Request
+description: Propose a new feature, improvement, or a new cybersecurity tool for Security Studio.
+title: "[FEATURE] "
+labels: ["enhancement"]
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Have an idea for a new security tool or an enhancement to the workspace? Let us know!
+  - type: textarea
+    id: problem
+    attributes:
+      label: Is your feature request related to a problem?
+      description: A clear description of what the problem or limitation is.
+      placeholder: e.g. I am frustrated when trying to check...
+    validations:
+      required: false
+  - type: textarea
+    id: solution
+    attributes:
+      label: Describe the Solution
+      description: A clear and concise description of what you want to happen.
+      placeholder: Describe the feature or improvement...
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives Considered
+      description: A description of any alternative solutions or workarounds you have considered.
+      placeholder: Describe alternatives...
+    validations:
+      required: false
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional Context
+      description: Add any other context, mockup screenshots, or API specs here.
+      placeholder: Link to RFCs, standard documents, or library links...
+    validations:
+      required: false

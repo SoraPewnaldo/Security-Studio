@@ -1,0 +1,58 @@
+name: Bug Report
+description: File a report to help us identify and fix a bug in Security Studio.
+title: "[BUG] "
+labels: ["bug"]
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this bug report! Please provide as much detail as possible to help us reproduce the issue.
+  - type: textarea
+    id: description
+    attributes:
+      label: Bug Description
+      description: A clear and concise description of what the bug is.
+      placeholder: Describe the problem...
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to Reproduce
+      description: List the steps to reproduce this behavior.
+      placeholder: |
+        1. Open the tool '...'
+        2. Enter input '...'
+        3. Click button '...'
+        4. See error
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected Behavior
+      description: A clear description of what you expected to happen.
+      placeholder: What should have happened...
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment Info
+      description: Information about your local setup.
+      value: |
+        - OS: [e.g. Windows 11, macOS, Linux]
+        - Node.js Version: [e.g. v20.11.0]
+        - Browser: [e.g. Chrome, Firefox, Safari]
+        - App Version: [e.g. v1.2.0]
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant Logs/Screenshots
+      description: Paste any console error logs or drag-and-drop screenshots here.
+      placeholder: Paste console output or error traces here...
+    validations:
+      required: false
