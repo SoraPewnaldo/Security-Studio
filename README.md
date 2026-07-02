@@ -12,7 +12,7 @@
 
 ---
 
-**Security Studio** is a self-hosted, offline-ready desktop and web-based workspace designed to bundle all the utilities a security professional, penetration tester, or developer needs. No telemetry, no cloud dependencies, and absolute data privacy.
+**Security Studio** is a self-hosted, offline-ready web-based workspace designed to bundle all the utilities a security professional, penetration tester, or developer needs. No telemetry, no cloud dependencies, and absolute data privacy.
 
 *Privacy-first • Manifest-driven • Auto-configuring • Local SQLite • Zero-Account Overhead*
 
@@ -49,14 +49,7 @@
 
 ## 📦 Installation & Setup
 
-### For Users (Desktop Application)
-For the best standalone native experience on Windows, download the installer:
-1. Navigate to [GitHub Releases](../../releases).
-2. Download `SecurityStudio-Setup.exe`.
-3. Install and run. (The Tauri desktop wrapper bundles the database, API server, and interface natively).
-
-### For Developers & Contributors
-To run the monorepo locally, you only need **Node.js (v20+)**:
+To run the application locally, you only need **Node.js (v20+)**:
 
 ```bash
 # Clone the repository
@@ -82,11 +75,10 @@ Security Studio is built as a highly structured workspaces monorepo:
 security-studio/
 ├── apps/
 │   ├── web/           # React + Vite frontend SPA (uses code-split lazy loading)
-│   ├── api/           # Express + Prisma + SQLite local API backend
-│   └── desktop/       # Tauri desktop client wrapper
+│   └── api/           # Express + Prisma + SQLite local API backend
 ├── packages/
 │   ├── core/          # Event bus and local tool search indexing
-│   ├── tool-sdk/      # Tool registration mechanisms
+│   ├── tool-sdk/      # Tool registry & SDK
 │   ├── types/         # Shared TypeScript interfaces
 │   └── utils/         # Shared helper functions
 ├── data/              # SQLite database (auto-generated)
