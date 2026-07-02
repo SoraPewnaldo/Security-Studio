@@ -26,7 +26,7 @@ export function AboutPage() {
         <h1 className="text-2xl font-semibold text-text">Security Studio</h1>
         <p className="text-text-secondary mt-1">The modern open-source workspace for security engineers</p>
         <div className="mt-3 inline-flex items-center gap-2 px-3 py-1 rounded-full bg-surface border border-border text-xs text-text-secondary">
-          v1.0.0 • {toolRegistry.size} tools
+          v1.2.0 • {toolRegistry.size} tools
         </div>
       </div>
 
@@ -45,11 +45,11 @@ export function AboutPage() {
       <section className="rounded-lg border border-border bg-surface p-6">
         <h2 className="text-sm font-medium text-text mb-4">Links</h2>
         <div className="space-y-2">
-          <a href="https://github.com/security-studio/security-studio" target="_blank" rel="noopener noreferrer"
+          <a href="https://github.com/SoraPewnaldo/Security-Studio" target="_blank" rel="noopener noreferrer"
             className="flex items-center gap-2 text-sm text-primary hover:text-primary-hover transition-colors">
             <Github size={14} /> GitHub Repository <ExternalLink size={10} />
           </a>
-          <a href="https://github.com/security-studio/security-studio/issues" target="_blank" rel="noopener noreferrer"
+          <a href="https://github.com/SoraPewnaldo/Security-Studio/issues" target="_blank" rel="noopener noreferrer"
             className="flex items-center gap-2 text-sm text-primary hover:text-primary-hover transition-colors">
             <ExternalLink size={14} /> Report an Issue <ExternalLink size={10} />
           </a>
