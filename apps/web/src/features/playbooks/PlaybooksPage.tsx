@@ -330,22 +330,22 @@ export function PlaybookRunner({ playbookId }: { playbookId: string }) {
       </div>
 
       {/* FOOTER NAV */}
-      <div className="flex-shrink-0 px-6 py-3 border-t border-border bg-surface flex items-center justify-between">
+      <div className="flex-shrink-0 px-4 py-2.5 border-t border-border bg-surface flex items-center justify-between gap-2">
         <button
           onClick={goPrev}
           disabled={currentStep === 0}
-          className="flex items-center gap-2 px-4 py-2 text-[13px] text-text-secondary hover:text-text rounded-lg border border-border disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+          className="flex items-center gap-1.5 px-3 py-1.5 text-[12px] text-text-secondary hover:text-text rounded-md border border-border disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
         >
-          <ChevronLeft size={14} /> Previous
+          <ChevronLeft size={13} /> Previous
         </button>
 
-        <span className="text-[12px] text-text-muted">
-          {completedSteps} of {totalSteps} completed
+        <span className="text-[11px] text-text-muted">
+          {completedSteps}/{totalSteps} done
         </span>
 
         <button
           onClick={handleComplete}
-          className="px-6 py-2 text-sm font-medium rounded-md bg-primary text-bg hover:bg-primary-hover transition-colors cursor-pointer"
+          className="px-4 py-1.5 text-[12px] font-medium rounded-md bg-primary text-bg hover:bg-primary-hover transition-colors cursor-pointer"
         >
           {isLastStep ? 'Complete' : 'Done & Continue'}
         </button>
