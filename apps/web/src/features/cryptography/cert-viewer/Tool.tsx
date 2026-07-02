@@ -3,7 +3,7 @@ import { ToolLayout } from '@/components/ToolLayout';
 import { InputPanel } from '@/components/InputPanel';
 import { OutputPanel } from '@/components/OutputPanel';
 import { manifest } from './manifest';
-import { parseCertificate, type CertDetails } from './logic';
+import { parseCertificate, normalizePem, type CertDetails } from './logic';
 import type { ToolExample } from '@security-studio/types';
 import readme from './README.md?raw';
 
@@ -35,6 +35,16 @@ export default function CertViewerTool() {
     setDetails(null); setError('');
   };
 
+  const handleNormalize = () => {
+    try {
+      const cleaned = normalizePem(certInput);
+      setCertInput(cleaned);
+      setError('');
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'Could not normalize PEM');
+    }
+  };
+
   return (
     <ToolLayout manifest={manifest} outputText={details ? JSON.stringify(details, null, 2) : ''} readme={readme} onLoadExample={handleLoadExample}>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
@@ -46,13 +56,23 @@ export default function CertViewerTool() {
             placeholder="-----BEGIN CERTIFICATE-----\nMIIDzTCCArWgAwIBAgIQCX..."
             className="w-full h-[400px] bg-bg border border-border rounded-md p-3 text-sm font-mono text-text placeholder:text-text-muted resize-none focus:border-primary focus:outline-none transition-colors"
           />
-          <button
-            onClick={handleParse}
-            disabled={loading}
-            className="mt-4 w-full px-4 py-2 text-sm font-medium rounded-md bg-primary text-bg hover:bg-primary-hover transition-colors cursor-pointer disabled:opacity-50"
-          >
-            {loading ? 'Parsing...' : 'Parse Certificate'}
-          </button>
+          <div className="mt-4 flex gap-2">
+            <button
+              onClick={handleNormalize}
+              disabled={!certInput.trim()}
+              title="Strip corrupted characters and re-wrap base64 lines"
+              className="px-4 py-2 text-sm font-medium rounded-md border border-border text-text-secondary hover:text-text hover:border-primary/50 transition-colors cursor-pointer disabled:opacity-40"
+            >
+              Clean Input
+            </button>
+            <button
+              onClick={handleParse}
+              disabled={loading}
+              className="flex-1 px-4 py-2 text-sm font-medium rounded-md bg-primary text-bg hover:bg-primary-hover transition-colors cursor-pointer disabled:opacity-50"
+            >
+              {loading ? 'Parsing...' : 'Parse Certificate'}
+            </button>
+          </div>
         </InputPanel>
 
         <OutputPanel title="Certificate Details" copyText={details ? JSON.stringify(details, null, 2) : ''} onClear={() => setDetails(null)}>
