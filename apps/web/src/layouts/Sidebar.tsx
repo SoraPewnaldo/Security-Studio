@@ -282,7 +282,7 @@ export function Sidebar() {
         )}
       </div>
 
-      {/* Inline Search — clicking opens Command Palette via Ctrl+K */}
+      {/* Inline Search — clicking opens Command Palette */}
       <div className="px-4 py-2 mb-2 flex-shrink-0">
         <div className="relative">
           <Search size={14} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-text-muted" />
@@ -291,14 +291,11 @@ export function Sidebar() {
             placeholder="Find..." 
             readOnly
             onClick={() => {
-              window.dispatchEvent(new KeyboardEvent('keydown', { key: 'k', ctrlKey: true, bubbles: true }));
+              window.dispatchEvent(new CustomEvent('open-command-palette'));
             }}
-            className="w-full bg-surface-hover border-none rounded-md pl-8 pr-6 py-1.5 text-[13px] text-text
+            className="w-full bg-surface-hover border-none rounded-md pl-8 pr-3 py-1.5 text-[13px] text-text
               placeholder:text-text-muted focus:ring-1 focus:ring-border outline-none transition-all cursor-pointer"
           />
-          <kbd className="absolute right-2 top-1/2 -translate-y-1/2 px-1 text-[10px] font-mono rounded bg-bg text-text-muted border border-border">
-            F
-          </kbd>
         </div>
       </div>
 

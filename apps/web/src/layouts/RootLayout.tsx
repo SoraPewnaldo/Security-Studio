@@ -1,15 +1,18 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Outlet } from '@tanstack/react-router';
 import { Sidebar } from './Sidebar';
 import { Topbar } from './Topbar';
 import { CommandPalette } from '@/features/command-palette/CommandPalette';
-import { useKeyboardShortcut } from '@/hooks/useKeyboardShortcut';
 import DotGrid from '@/components/ui/DotGrid';
 
 export function RootLayout() {
   const [commandPaletteOpen, setCommandPaletteOpen] = useState(false);
 
-  useKeyboardShortcut('k', () => setCommandPaletteOpen(true), { ctrl: true });
+  useEffect(() => {
+    const handleOpen = () => setCommandPaletteOpen(true);
+    window.addEventListener('open-command-palette', handleOpen);
+    return () => window.removeEventListener('open-command-palette', handleOpen);
+  }, []);
 
   return (
     <div className="flex h-screen bg-bg overflow-hidden relative">

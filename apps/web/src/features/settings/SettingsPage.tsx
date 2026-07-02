@@ -1,17 +1,7 @@
 import { useState } from 'react';
-import { Settings, Keyboard, Database } from 'lucide-react';
+import { Settings, Database } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { useQueryClient } from '@tanstack/react-query';
-
-const SHORTCUTS = [
-  { keys: 'Ctrl+K', action: 'Open Command Palette' },
-  { keys: '/', action: 'Focus Search' },
-  { keys: 'Ctrl+Shift+C', action: 'Copy Output' },
-  { keys: 'Esc', action: 'Close Modal / Palette' },
-  { keys: 'Ctrl+S', action: 'Save Snippet' },
-  { keys: 'Ctrl+H', action: 'Open History' },
-  { keys: 'Ctrl+,', action: 'Open Settings' },
-];
 
 export function SettingsPage() {
   const [exporting, setExporting] = useState(false);
@@ -23,39 +13,29 @@ export function SettingsPage() {
     try {
       const res = await fetch('/api/settings/export');
       const json = await res.json();
-      if (!json.success) throw new Error(json.error || 'Export failed');
-
-      const blob = new Blob([JSON.stringify(json.data, null, 2)], { type: 'application/json' });
+      const blob = new Blob([JSON.stringify(json, null, 2)], { type: 'application/json' });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = `security-studio-export-${new Date().toISOString().slice(0, 10)}.json`;
-      document.body.appendChild(a);
+      a.download = `security-studio-export-${Date.now()}.json`;
       a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-      
-      toast.success('Data exported successfully');
-    } catch (e: any) {
-      toast.error(`Export failed: ${e.message}`);
+      toast.success('Database and settings exported successfully');
+    } catch {
+      toast.error('Failed to export settings');
     } finally {
       setExporting(false);
     }
   };
 
   const handleReset = async () => {
-    if (!window.confirm('Are you absolutely sure you want to delete all local data? This cannot be undone.')) return;
-    
+    if (!confirm('Are you absolutely sure? This will delete all history, workspaces, and reset all settings.')) return;
     setResetting(true);
     try {
-      const res = await fetch('/api/settings/reset', { method: 'POST' });
-      const json = await res.json();
-      if (!json.success) throw new Error(json.error || 'Reset failed');
-
-      await queryClient.invalidateQueries();
-      toast.success('All data has been reset');
-    } catch (e: any) {
-      toast.error(`Reset failed: ${e.message}`);
+      await fetch('/api/settings/reset', { method: 'POST' });
+      queryClient.clear();
+      toast.success('Database and workspaces reset successfully');
+    } catch {
+      toast.error('Failed to reset database');
     } finally {
       setResetting(false);
     }
@@ -69,23 +49,6 @@ export function SettingsPage() {
         </h1>
         <p className="text-sm text-text-secondary mt-1.5">Manage your workspace preferences and data.</p>
       </div>
-
-      {/* Keyboard Shortcuts */}
-      <section>
-        <h2 className="text-xs font-semibold text-text-muted uppercase tracking-widest flex items-center gap-2 mb-4">
-          <Keyboard size={14} /> Keyboard Shortcuts
-        </h2>
-        <div className="rounded-md border border-border bg-bg divide-y divide-border">
-          {SHORTCUTS.map(({ keys, action }) => (
-            <div key={keys} className="flex items-center justify-between px-5 py-3">
-              <span className="text-[13px] font-medium text-text-secondary">{action}</span>
-              <kbd className="px-2 py-1 text-[11px] font-mono font-medium tracking-wide bg-surface border border-border rounded text-text-muted">
-                {keys}
-              </kbd>
-            </div>
-          ))}
-        </div>
-      </section>
 
       {/* Data Management */}
       <section>
