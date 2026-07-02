@@ -282,15 +282,19 @@ export function Sidebar() {
         )}
       </div>
 
-      {/* Inline Search */}
+      {/* Inline Search — clicking opens Command Palette via Ctrl+K */}
       <div className="px-4 py-2 mb-2 flex-shrink-0">
         <div className="relative">
           <Search size={14} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-text-muted" />
           <input 
             type="text" 
             placeholder="Find..." 
+            readOnly
+            onClick={() => {
+              window.dispatchEvent(new KeyboardEvent('keydown', { key: 'k', ctrlKey: true, bubbles: true }));
+            }}
             className="w-full bg-surface-hover border-none rounded-md pl-8 pr-6 py-1.5 text-[13px] text-text
-              placeholder:text-text-muted focus:ring-1 focus:ring-border outline-none transition-all"
+              placeholder:text-text-muted focus:ring-1 focus:ring-border outline-none transition-all cursor-pointer"
           />
           <kbd className="absolute right-2 top-1/2 -translate-y-1/2 px-1 text-[10px] font-mono rounded bg-bg text-text-muted border border-border">
             F
@@ -370,12 +374,12 @@ export function Sidebar() {
 
       {/* Footer */}
       <div className="flex-shrink-0 px-4 py-4 mt-auto">
-        <button className="flex items-center gap-2 w-full px-2 py-1.5 text-[13px] text-text-secondary hover:text-text transition-colors cursor-pointer">
+        <div className="flex items-center gap-2 px-2 py-1.5 text-[13px] text-text-muted">
           <div className="w-5 h-5 rounded-full bg-border flex items-center justify-center">
             <span className="text-[10px] font-medium text-text">U</span>
           </div>
           <span>User</span>
-        </button>
+        </div>
       </div>
     </aside>
   );

@@ -25,7 +25,6 @@ import { WorkspaceDetailPage } from '@/features/workspaces/WorkspaceDetailPage';
 import { PluginsPage } from '@/features/plugins/PluginsPage';
 import { PluginRunner } from '@/features/plugins/PluginRunner';
 import { PlaybooksDashboard, PlaybookRunner } from '@/features/playbooks/PlaybooksPage';
-import HttpClientTool from '@/features/networking/http-client/Tool';
 
 // Query client
 const queryClient = new QueryClient({
@@ -156,11 +155,6 @@ const playbookRunnerRoute = createRoute({
   },
 });
 
-const httpClientRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  path: '/tools/http-client',
-  component: HttpClientTool,
-});
 
 // Build route tree
 const routeTree = rootRoute.addChildren([
@@ -177,7 +171,6 @@ const routeTree = rootRoute.addChildren([
   pluginRunnerRoute,
   playbooksRoute,
   playbookRunnerRoute,
-  httpClientRoute,
 ]);
 
 const hashHistory = createHashHistory();

@@ -28,6 +28,7 @@
     "node": ">=20.0.0"
   },
   "devDependencies": {
-    "concurrently": "^10.0.3"
+    "concurrently": "^10.0.3",
+    "rimraf": "^6.0.1"
   }
 }
